@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABSENSI DIGITAL V2.8 - POLRI COMMAND SYSTEM</title>
+    <title>ABSENSI DIGITAL V2.9 - POLRI COMMAND SYSTEM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=500;800&family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -33,17 +33,17 @@
                 <div class="subtitle-school">KONSOL UTAMA INTEGRASI KEDINASAN<br>INDONESIA POLICE NASIONAL</div>
                 
                 <div class="welcome-buttons-school">
-                    <button id="btn-go-to-member" class="btn-primary-maroon">ABSENSI</button>
-                    <button id="btn-go-to-admin" class="btn-text-only">Pengelola</button>
+                    <button type="button" id="btn-go-to-member" class="btn-primary-maroon">ABSENSI</button>
+                    <button type="button" id="btn-go-to-admin" class="btn-text-only">Pengelola</button>
                 </div>
-                <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span> | V2.8</div>
+                <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span> | V2.9</div>
             </div>
         </div>
 
-        <div id="member-login-page" class="page">
+        <div id="member-login-page" class="page" style="display: none;">
             <div class="school-card">
                 <div class="card-header-v2">
-                    <button id="btn-back-from-member" class="btn-back-v2"><i class="fa-solid fa-arrow-left-long"></i></button>
+                    <button type="button" id="btn-back-from-member" class="btn-back-v2"><i class="fa-solid fa-arrow-left-long"></i></button>
                     <div>
                         <h2>Absensi Digital</h2>
                         <p>INDONESIA POLICE NASIONAL</p>
@@ -89,7 +89,7 @@
                             <input type="file" id="member-photo-input" accept="image/*" style="display: none;">
                             <div id="upload-preview-container" class="preview-box-v2" style="margin-bottom: 10px;">
                                 <span id="preview-placeholder">Belum ada gambar terpilih</span>
-                                <img id="uploaded-image-preview" src="" alt="Pratinjau Bukti" style="display: none;">
+                                <img id="uploaded-image-preview" src="" alt="Pratinjau Bukti" style="display: none; max-width: 100%; height: auto; border-radius: 8px;">
                             </div>
                             <button type="button" id="btn-trigger-upload" class="btn-grid-dark-upload">
                                 Ambil Foto dari Galeri
@@ -97,21 +97,21 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="btn-submit-absensi" class="btn-primary-maroon" style="border-radius: 40px; margin-top: 15px;">
+                    <button type="submit" id="btn-submit-absensi" class="btn-primary-maroon" style="border-radius: 40px; margin-top: 15px; width: 100%;">
                         KIRIM ABSENSI
                     </button>
 
-                    <button type="button" id="btn-cancel-absensi" class="btn-text-only" style="margin-top: 5px; color: #4a5568; font-weight: bold; text-transform: uppercase; font-size: 0.85rem;">
+                    <button type="button" id="btn-cancel-absensi" class="btn-text-only" style="margin-top: 5px; color: #4a5568; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; width: 100%;">
                         BATALKAN
                     </button>
                 </form>
             </div>
         </div>
 
-        <div id="admin-login-page" class="page">
+        <div id="admin-login-page" class="page" style="display: none;">
             <div class="school-card text-center">
                 <div class="card-header-v2" style="justify-content: center; position: relative;">
-                    <button id="btn-back-from-admin" class="btn-back-v2" style="position: absolute; left: 0;"><i class="fa-solid fa-arrow-left-long"></i></button>
+                    <button type="button" id="btn-back-from-admin" class="btn-back-v2" style="position: absolute; left: 0;"><i class="fa-solid fa-arrow-left-long"></i></button>
                     <div>
                         <h2>Gerbang Otentikasi</h2>
                         <p>Otoritas Pengawasan Internal Kode Akses</p>
@@ -124,7 +124,7 @@
                         <div class="form-group-v2">
                             <input type="password" id="admin-secret-code" placeholder="••••••••" required class="password-center-v2">
                         </div>
-                        <button type="submit" class="btn-primary-maroon" style="border-radius: 50px; margin-top: 10px;">
+                        <button type="submit" class="btn-primary-maroon" style="border-radius: 50px; margin-top: 10px; width: 100%;">
                             MASUK KONSOL KENDALI
                         </button>
                     </form>
@@ -132,7 +132,7 @@
             </div>
         </div>
 
-        <div id="admin-page" class="page">
+        <div id="admin-page" class="page" style="display: none;">
             <div class="school-card text-center admin-grid-card">
                 
                 <div class="logo-container" style="margin-bottom: 15px;">
