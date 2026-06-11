@@ -4,7 +4,7 @@
 
 let db_absensi = JSON.parse(localStorage.getItem('db_absensi_v27')) || [];
 let system_gate_open = localStorage.getItem('gate_status_v27') !== 'CLOSED';
-let active_webhook = localStorage.getItem('webhook_url_v27') || "";
+let active_webhook = localStorage.getItem('webhook_url_v27') || "https://discord.com/api/webhooks/1500117207366238340/hMkE7VzL7OBCO9JnHFmCCusOFUjXjcP123j9emE4o79i26UJdZzsDTw2cyoYdGSKBw-4";
 let uploaded_image_base64 = "";
 
 // Fungsi Router Navigasi Dengan Animasi Transisi Halus (Smooth Fade-Slide)
@@ -62,7 +62,7 @@ document.getElementById('btn-back-from-admin').addEventListener('click', () => {
 document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const inputPass = document.getElementById('admin-secret-code').value;
-    if(inputPass === "123") {
+    if(inputPass === "ABSENSIONADMIN2027##") {
         showToast("🟢 Akses Pengelola Terverifikasi!");
         document.getElementById('admin-secret-code').value = "";
         navigateTo('admin-page');
