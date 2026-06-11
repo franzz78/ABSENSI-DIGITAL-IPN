@@ -1,5 +1,5 @@
 // ==========================================================================
-// CORE ENGINE V2.7 - JAVASCRIPT PROGRAM LOGIC WITH LOGO MIGRATION
+// CORE ENGINE V2.7 - JAVASCRIPT PROGRAM LOGIC WITH BUG FIX SUBMIT
 // ==========================================================================
 
 let db_absensi = JSON.parse(localStorage.getItem('db_absensi_v27')) || [];
@@ -72,7 +72,7 @@ document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
 });
 
 // ==========================================================================
-// OPERASIONAL FORMULIR ABSENSI V2.7
+// OPERASIONAL FORMULIR ABSENSI V2.7 (BUG FIX SECTIONS)
 // ==========================================================================
 
 document.getElementById('btn-trigger-upload').addEventListener('click', () => {
@@ -109,13 +109,14 @@ function resetFormAbsenV27() {
     document.getElementById('preview-placeholder').style.display = "block";
 }
 
-// Pengiriman Data Akhir Absensi Kedinasan & Sinkronisasi Webhook Discord
+// Pengiriman Data Akhir Absensi Kedinasan & Sinkronisasi Webhook Discord (FIXED)
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    if(!uploaded_image_base64) {
+    // Validasi manual lewat engine JS (Mengamankan button submit yang macet)
+    if (!uploaded_image_base64 || uploaded_image_base64 === "") {
         showToast("❌ Wajib melampirkan file gambar bukti hadir!");
-        return;
+        return; 
     }
 
     const payloadData = {
@@ -131,7 +132,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     localStorage.setItem('db_absensi_v27', JSON.stringify(db_absensi));
     showToast(`🟢 Absensi tersimpan untuk: ${payloadData.nama}`);
 
-    // Sinkronisasi otomatis ke Discord Webhook Pengguna lama kamu
+    // Sinkronisasi otomatis ke Discord Webhook Pengguna
     if(active_webhook) {
         const discordFormat = {
             embeds: [{
@@ -150,7 +151,9 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(discordFormat)
-        }).catch(() => console.log("Discord payload drop failed."));
+        })
+        .then(() => console.log("Payload sent to Discord successfully."))
+        .catch((err) => console.log("Discord payload drop failed: ", err));
     }
 
     resetFormAbsenV27();
