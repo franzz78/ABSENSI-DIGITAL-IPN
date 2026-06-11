@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABSENSI DIGITAL V2.5 - POLRI COMMAND SYSTEM</title>
+    <title>ABSENSI DIGITAL V2.7 - POLRI COMMAND SYSTEM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -27,7 +27,7 @@
         <div id="welcome-page" class="page active">
             <div class="school-card text-center">
                 <div class="logo-container">
-                    <img id="app-logo" src="https://via.placeholder.com/120x150?text=LOGO" alt="Logo Polri">
+                    <img class="app-logo-official" src="https://tareqwavlgqoexxffuuc.supabase.co/storage/v1/object/sign/Photo/IPNLOGO.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9kNWIxNTEyZS03YTE5LTQzY2UtYWUxNC00ZmRkNzMyZmIyODMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaG90by9JUE5MT0dPLmpwZyIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3ODExOTYyMTMsImV4cCI6MTgxMjczMjIxM30.pyV2CduORXU1LVbaYdRqkes1fRsMovBqV2cahJa54aI" alt="Logo IPN">
                 </div>
                 <h1 class="main-title-school">ABSENSI DIGITAL<br>ANGGOTA</h1>
                 <div class="subtitle-school">KONSOL UTAMA INTEGRASI KEDINASAN<br>INDONESIA POLICE NASIONAL</div>
@@ -36,7 +36,7 @@
                     <button id="btn-go-to-member" class="btn-primary-maroon">ABSENSI</button>
                     <button id="btn-go-to-admin" class="btn-text-only">Pengelola</button>
                 </div>
-                <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span> | V2.5</div>
+                <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span> | V2.7</div>
             </div>
         </div>
 
@@ -91,7 +91,7 @@
                                 <img id="uploaded-image-preview" src="" alt="Pratinjau Bukti" style="display: none;">
                             </div>
                             <button type="button" id="btn-trigger-upload" class="btn-grid-dark-upload">
-                                Ambil Foto
+                                Ambil Foto dari Galeri
                             </button>
                         </div>
                     </div>
@@ -113,34 +113,18 @@
                     <button id="btn-back-from-admin" class="btn-back-v2" style="position: absolute; left: 0;"><i class="fa-solid fa-arrow-left-long"></i></button>
                     <div>
                         <h2>Gerbang Otentikasi</h2>
-                        <p>Otoritas Pengawasan Internal Provos</p>
+                        <p>Otoritas Pengawasan Internal Kode Akses</p>
                     </div>
                 </div>
 
-                <div class="auth-tabs-v2">
-                    <button id="tab-auth-finger" class="auth-tab-btn active"><i class="fa-solid fa-fingerprint"></i> Biometrik</button>
-                    <button id="tab-auth-manual" class="auth-tab-btn"><i class="fa-solid fa-key"></i> Password</button>
-                </div>
-
-                <div id="mode-fingerprint" class="auth-mode-content active">
-                    <p class="prompt-text-v2">Tempelkan Sidik Jari Anda pada Sensor HP</p>
-                    <div class="fingerprint-wrapper">
-                        <div class="scanner-laser"></div>
-                        <button type="button" id="btn-biometric-scan" class="fingerprint-btn">
-                            <i class="fa-solid fa-fingerprint"></i>
-                        </button>
-                    </div>
-                    <div id="scan-status" class="scan-status-text">MENUNGGU VERIFIKASI BIOMETRIK...</div>
-                </div>
-
-                <div id="mode-manual-pass" class="auth-mode-content">
-                    <p class="prompt-text-v2">Masukkan Password Pengelola</p>
+                <div id="mode-manual-pass" class="auth-mode-content active" style="margin-top: 20px;">
+                    <p class="prompt-text-v2"><i class="fa-solid fa-lock-open" style="color: var(--maroon-primary);"></i> Masukkan Kunci Sandi Administrator</p>
                     <form id="admin-auth-form" class="modern-form-v2">
                         <div class="form-group-v2">
                             <input type="password" id="admin-secret-code" placeholder="••••••••" required class="password-center-v2">
                         </div>
-                        <button type="submit" class="btn-primary-maroon" style="border-radius: 12px; height: auto; padding: 15px;">
-                            MASUK KONSOL
+                        <button type="submit" class="btn-primary-maroon" style="border-radius: 50px; margin-top: 10px;">
+                            MASUK KONSOL KENDALI
                         </button>
                     </form>
                 </div>
@@ -151,7 +135,7 @@
             <div class="school-card text-center admin-grid-card">
                 
                 <div class="logo-container" style="margin-bottom: 15px;">
-                    <img id="admin-app-logo" src="https://via.placeholder.com/120x150?text=LOGO" alt="Logo" style="max-height: 90px;">
+                    <img class="app-logo-official admin-mini-logo" src="https://tareqwavlgqoexxffuuc.supabase.co/storage/v1/object/sign/Photo/IPNLOGO.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9kNWIxNTEyZS03YTE5LTQzY2UtYWUxNC00ZmRkNzMyZmIyODMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJQaG90by9JUE5MT0dPLmpwZyIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3ODExOTYyMTMsImV4cCI6MTgxMjczMjIxM30.pyV2CduORXU1LVbaYdRqkes1fRsMovBqV2cahJa54aI" alt="Logo IPN">
                 </div>
 
                 <h1 class="main-title-school" style="font-size: 1.5rem; margin-bottom: 4px;">Konsol Pengelola</h1>
@@ -160,12 +144,6 @@
                 <div class="grid-row-v2">
                     <button class="btn-grid-dark" id="btn-admin-rekap">Rekap Kehadiran</button>
                     <button class="btn-grid-dark" id="btn-admin-kelola">Kelola Absensi</button>
-                </div>
-
-                <div class="full-row-v2">
-                    <button class="btn-grid-biometric" id="btn-admin-biometric-set">
-                        Atur Biometrik &nbsp;<i class="fa-solid fa-fingerprint"></i>
-                    </button>
                 </div>
 
                 <div class="grid-row-v2">
@@ -180,10 +158,10 @@
 
                 <div class="grid-row-v2">
                     <button class="btn-grid-magenta" id="btn-delete-daily-v2">Reset Harian</button>
-                    <button class="btn-grid-brown" id="btn-delete-monthly-v2">Reset Bulanan</button>
+                    <button class="btn-grid-brown" id="btn-delete-monthly-v2">Reset & Webhook</button>
                 </div>
 
-                <button id="btn-admin-logout-v2" class="btn-text-only" style="margin-top: 20px; color: #dc2626; font-weight: 700;">
+                <button id="btn-admin-logout-v2" class="btn-text-only" style="margin-top: 25px; color: #dc2626; font-weight: 700;">
                     <i class="fa-solid fa-power-off"></i> Keluar Sesi Pengelola
                 </button>
             </div>
