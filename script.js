@@ -1,36 +1,39 @@
 // ==========================================================================
-// CORE ENGINE V2.8 - ABSENSI IPN ANTI-BUG / ANTI-STUCK RUNNER
+// CORE ENGINE V2.9 - ABSENSI IPN ANTI-BUG & MULTI-BROWSER PROTECTION
 // ==========================================================================
 
 let db_absensi = JSON.parse(localStorage.getItem('db_absensi_v27')) || [];
 let system_gate_open = localStorage.getItem('gate_status_v27') !== 'CLOSED';
-let active_webhook = localStorage.getItem('webhook_url_v27') || "";
+let active_webhook = localStorage.getItem('webhook_url_v27') || "https://discord.com/api/webhooks/1500117207366238340/hMkE7VzL7OBCO9JnHFmCCusOFUjXjcP123j9emE4o79i26UJdZzsDTw2cyoYdGSKBw-4";
 let uploaded_image_base64 = "";
 
-// Fungsi Router Navigasi Dengan Animasi Transisi Halus (Smooth Fade-Slide)
+// Fungsi Navigasi Hard Fix (Memaksa display block/none agar layer klik tidak bertumpuk)
 function navigateTo(pageId) {
-    const activePage = document.querySelector('.page.active');
+    const allPages = document.querySelectorAll('.page');
     const targetPage = document.getElementById(pageId);
     
-    if (activePage) {
-        activePage.style.opacity = "0";
-        activePage.style.transform = "translateY(-10px) scale(0.98)";
-        
-        setTimeout(() => {
-            activePage.classList.remove('active');
-            triggerTargetIn(targetPage);
-        }, 200);
-    } else {
-        triggerTargetIn(targetPage);
-    }
-}
-
-function triggerTargetIn(targetPage) {
     if (!targetPage) return;
-    targetPage.classList.add('active');
-    targetPage.offsetWidth; 
-    targetPage.style.opacity = "1";
-    targetPage.style.transform = "translateY(0) scale(1)";
+
+    // Sembunyikan dan matikan interaksi halaman lama secara instan
+    allPages.forEach(page => {
+        page.style.opacity = "0";
+        page.style.transform = "translateY(-10px) scale(0.98)";
+        page.classList.remove('active');
+        // Jeda waktu kecil lalu buat display: none agar area klik bersih
+        setTimeout(() => {
+            if(!page.classList.contains('active')) {
+                page.style.display = "none";
+            }
+        }, 200);
+    });
+
+    // Munculkan halaman target
+    targetPage.style.display = "block";
+    setTimeout(() => {
+        targetPage.classList.add('active');
+        targetPage.style.opacity = "1";
+        targetPage.style.transform = "translateY(0) scale(1)";
+    }, 50);
 }
 
 // Banner Pop-up Notifikasi Melayang
@@ -48,9 +51,16 @@ function showToast(message) {
     }, 3200);
 }
 
-// Proteksi & Inisialisasi Event Listener Utama (Aman dari crash Engine)
+// Inisialisasi Event Listener Setelah DOM Siap
 document.addEventListener("DOMContentLoaded", () => {
     
+    // Pastikan halaman awal default bersih di setup pertama
+    const welcomePage = document.getElementById('welcome-page');
+    if(welcomePage) {
+        welcomePage.style.display = "block";
+        welcomePage.style.opacity = "1";
+    }
+
     // Alur Pindah Halaman Menu Utama
     const btnGoMember = document.getElementById('btn-go-to-member');
     if(btnGoMember) {
@@ -121,21 +131,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCancelAbsen = document.getElementById('btn-cancel-absensi');
     if(btnCancelAbsen) {
         btnCancelAbsen.addEventListener('click', () => {
-            resetFormAbsenV28();
+            resetFormAbsenV29();
             navigateTo('welcome-page');
         });
     }
 
-    // FORMULIR SUBMIT UTAMA (PENANGANAN UTAMA ANTI-BUG)
+    // ==========================================================================
+    // SEKSI PENGEKSEKSIAN UTAMA ABSENSI (ANTI-LOCK FIX)
+    // ==========================================================================
     const loginForm = document.getElementById('login-form');
     if(loginForm) {
         loginForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Mengunci reload
+            e.preventDefault(); 
             
-            // Pengaman Utama: Cek apakah file base64 sudah masuk sempurna
+            const btnSubmit = document.getElementById('btn-submit-absensi');
+
+            // Proteksi 1: Validasi keberadaan file lokal base64 javascript
             if (!uploaded_image_base64 || uploaded_image_base64.trim() === "") {
                 showToast("❌ Wajib melampirkan file gambar bukti hadir!");
                 return;
+            }
+
+            // Proteksi 2: Matikan tombol agar menghindari pengiriman ganda (stuck loading)
+            if(btnSubmit) {
+                btnSubmit.disabled = true;
+                btnSubmit.innerText = "SEDANG MENGIRIM...";
+                btnSubmit.style.opacity = "0.6";
             }
 
             const payloadData = {
@@ -147,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 foto_lokal: uploaded_image_base64
             };
 
+            // Simpan ke database lokal localstorage browser
             db_absensi.push(payloadData);
             localStorage.setItem('db_absensi_v27', JSON.stringify(db_absensi));
             showToast(`🟢 Absensi tersimpan untuk: ${payloadData.nama}`);
@@ -155,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (active_webhook) {
                 const discordFormat = {
                     embeds: [{
-                        title: 'NOTIFIKASI LOG ABSENSI MASUK`,
+                        title: `NOTIFIKASI LOG ABSENSI MASUK',
                         color: 3066993,
                         fields: [
                             { name: "Nama Anggota", value: payloadData.nama, inline: true },
@@ -163,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             { name: "Hari Kehadiran", value: payloadData.hari, inline: true },
                             { name: "Waktu Pencatatan", value: payloadData.waktu, inline: false }
                         ],
-                        footer: { text: "Sistem Otomatis V2.8 - POLRI COMMAND SYSTEM" }
+                        footer: { text: "Sistem Otomatis V2.9 - POLRI COMMAND SYSTEM" }
                     }]
                 };
                 
@@ -171,11 +193,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(discordFormat)
-                }).catch((err) => console.log("Discord Webhook Drop Error: ", err));
+                })
+                .then(() => console.log("Success forward to Discord channel."))
+                .catch((err) => console.log("Discord error ignored."));
             }
 
-            resetFormAbsenV28();
-            navigateTo('welcome-page');
+            // Beri jeda 200 milidetik agar penyimpanan selesai, lalu bersihkan form dan pulang ke menu utama
+            setTimeout(() => {
+                resetFormAbsenV29();
+                navigateTo('welcome-page');
+
+                // Normalkan kembali status tombol untuk pengisi berikutnya
+                if(btnSubmit) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerText = "KIRIM ABSENSI";
+                    btnSubmit.style.opacity = "1";
+                }
+            }, 200);
         });
     }
 
@@ -209,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
             modalTitle.innerText = "Kelola Manajemen Data Absen";
             tableHead.innerHTML = `<tr><th>Nama</th><th>Divisi</th><th>Hari</th><th>Tindakan</th></tr>`;
             tableBody.innerHTML = db_absensi.length === 0 ? `<tr><td colspan="4" style="text-align:center;">Kosong.</td></tr>` :
-                db_absensi.map((d, index) => `<tr><td>${d.nama}</td><td>${d.divisi}</td><td>${d.hari}</td><td><button onclick="window.removeLogIndex(${index})" style="background:#dc2626; color:#fff; border:none; padding:5px 12px; border-radius:30px; cursor:pointer; font-size:0.75rem; font-weight:bold;">Hapus</button></td></tr>`).join('');
+                db_absensi.map((d, index) => `<tr><td>${d.nama}</td><td>${d.divisi}</td><td>${d.hari}</td><td><button type="button" onclick="window.removeLogIndex(${index})" style="background:#dc2626; color:#fff; border:none; padding:5px 12px; border-radius:30px; cursor:pointer; font-size:0.75rem; font-weight:bold;">Hapus</button></td></tr>`).join('');
             modal.classList.add('active');
         });
     }
@@ -277,7 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const ws = XLSX.utils.json_to_sheet(cleanExportData);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Log Presensi");
-            XLSX.writeFile(wb, `REKAP_ABSENSI_POLRI_V28.xlsx`);
+            XLSX.writeFile(wb, `REKAP_ABSENSI_POLRI_V29.xlsx`);
             showToast("🟢 File dokumen Excel berhasil diunduh!");
         });
     }
@@ -294,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 8. Manajemen Webhook Baru & Reset Total Database
+    // 8. Hubungkan Tautan Webhook / Reset Total Database
     const btnDelMonthly = document.getElementById('btn-delete-monthly-v2');
     if(btnDelMonthly) {
         btnDelMonthly.addEventListener('click', () => {
@@ -311,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Sesi Tombol Logout Admin Panel
+    // Keluar Sesi Admin
     const btnLogoutAdmin = document.getElementById('btn-admin-logout-v2');
     if(btnLogoutAdmin) {
         btnLogoutAdmin.addEventListener('click', () => {
@@ -322,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Pembersihan Form Input Formulir
-function resetFormAbsenV28() {
+function resetFormAbsenV29() {
     const form = document.getElementById('login-form');
     if(form) form.reset();
     uploaded_image_base64 = "";
@@ -336,14 +370,13 @@ function resetFormAbsenV28() {
     if(placeholder) placeholder.style.display = "block";
 }
 
-// REGISTER FUNGSI SECARA GLOBAL WINDOW (Solusi Ampuh Anti Stuck Klik Element Dinamis)
+// Global window registration untuk tombol dinamis modal admin
 window.removeLogIndex = function(idx) {
     if(confirm("Hapus baris absensi ini secara permanen?")) {
         db_absensi.splice(idx, 1);
         localStorage.setItem('db_absensi_v27', JSON.stringify(db_absensi));
         showToast("🗑️ Log terpilih berhasil dihapus.");
         
-        // Refresh instan dom element modal list
         const btnKelola = document.getElementById('btn-admin-kelola');
         if(btnKelola) btnKelola.click();
     }
