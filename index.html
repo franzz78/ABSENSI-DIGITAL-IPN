@@ -3,291 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABSENSI DIGITAL V2.1</title>
+    <title>ABSENSI DIGITAL V2.2 - MODERN LIGHT</title>
     <!-- FontAwesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Efek Background Cyber / Poligon V2 -->
-    <div class="cyber-bg"></div>
-    <div class="glow-orb orb-1"></div>
-    <div class="glow-orb orb-2"></div>
+    <!-- Teks Berjalan Khas Pusat Komando (Marquee System) -->
+    <div class="marquee-container">
+        <div class="marquee-text">
+            --- IPN | INDONESIA POLICE NASIONAL --- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            --- BERINTEGRITAS TINGGI DAN PROFESIONAL SIAP MEMBANTU MASYARAKAT --- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            --- RASTRA SEWAKOTTAMA --- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+
+    <!-- Efek Latar Belakang Cerah Modern -->
+    <div class="cyber-bg-light"></div>
+    <div class="light-orb orb-1"></div>
+    <div class="light-orb orb-2"></div>
 
     <div id="notification-container"></div>
 
-    <!-- ========================================== -->
-    <!-- 1. HALAMAN AWAL (WELCOME SCREEN) -->
-    <!-- ========================================== -->
-    <div id="welcome-page" class="page active">
-        <div class="card glass-card text-center">
-            <div class="brand-shield-v2">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <h1 class="main-title-v2">ABSENSI DIGITAL</h1>
-            <div class="badge-version">VERSION 2.1</div>
-            <p class="subtitle-v2">Sistem Integrasi Presensi Anggota • Kepolisian Republik Indonesia</p>
-            
-            <div class="welcome-buttons-v2">
-                <button id="btn-go-to-member" class="btn-v2 btn-cyber-blue">
-                    <span class="btn-content-v2">
-                        <i class="fa-solid fa-fingerprint"></i>
-                        <span>MASUK PRESENSI<small>Absen Dinas & Izin Anggota</small></span>
-                    </span>
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </button>
+    <!-- Container Utama untuk Spacing dari Marquee -->
+    <div class="main-wrapper-app">
 
-                <button id="btn-go-to-admin" class="btn-v2 btn-cyber-gold">
-                    <span class="btn-content-v2">
-                        <i class="fa-solid fa-user-gear"></i>
-                        <span>KONSOL ADMINISTRATOR<small>Panel Kontrol & Log Provos</small></span>
-                    </span>
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </button>
-
-                <a href="https://discord.gg/Z9ZdyvCFBM" target="_blank" class="btn-v2 btn-cyber-discord">
-                    <span class="btn-content-v2">
-                        <i class="fa-brands fa-discord"></i>
-                        <span>HUBUNGKAN DISCORD<small>Masuk Komunikasi HT Pusat</small></span>
-                    </span>
-                    <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
-                </a>
-            </div>
-            <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span></div>
-        </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- 2. FORM ABSENSI ANGGOTA -->
-    <!-- ========================================== -->
-    <div id="member-login-page" class="page">
-        <div class="card glass-card">
-            <div class="card-header-v2">
-                <button id="btn-back-from-member" class="btn-back-v2"><i class="fa-solid fa-arrow-left-long"></i></button>
-                <div>
-                    <h2>Formulir Presisi</h2>
-                    <p>Silakan isi data kedinasan Anda</p>
+        <!-- ========================================== -->
+        <!-- 1. HALAMAN AWAL (WELCOME SCREEN) -->
+        <!-- ========================================== -->
+        <div id="welcome-page" class="page active">
+            <div class="card glass-card text-center">
+                <div class="brand-shield-v2">
+                    <i class="fa-solid fa-shield-halved"></i>
                 </div>
-            </div>
-            <form id="login-form" class="modern-form-v2">
-                <div class="form-group-v2">
-                    <label><i class="fa-solid fa-user"></i> Nama Lengkap / Nama Discord</label>
-                    <input type="text" id="discord-name" placeholder="Masukkan nama lengkap..." required autocomplete="off">
-                </div>
+                <h1 class="main-title-v2">ABSENSI DIGITAL</h1>
+                <div class="badge-version">VERSION 2.2</div>
+                <p class="subtitle-v2">Sistem Integrasi Presensi Anggota • Kepolisian Republik Indonesia</p>
                 
-                <div class="form-grid-v2">
+                <div class="welcome-buttons-v2">
+                    <button id="btn-go-to-member" class="btn-v2 btn-cyber-blue">
+                        <span class="btn-content-v2">
+                            <i class="fa-solid fa-fingerprint"></i>
+                            <span>MASUK PRESENSI<small>Absen Dinas & Izin Anggota</small></span>
+                        </span>
+                        <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                    </button>
+
+                    <button id="btn-go-to-admin" class="btn-v2 btn-cyber-gold">
+                        <span class="btn-content-v2">
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span>KONSOL ADMINISTRATOR<small>Panel Kontrol & Log Provos</small></span>
+                        </span>
+                        <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                    </button>
+
+                    <a href="https://discord.gg/Z9ZdyvCFBM" target="_blank" class="btn-v2 btn-cyber-discord">
+                        <span class="btn-content-v2">
+                            <i class="fa-brands fa-discord"></i>
+                            <span>HUBUNGKAN DISCORD<small>Masuk Komunikasi HT Pusat</small></span>
+                        </span>
+                        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span></div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 2. FORM ABSENSI ANGGOTA -->
+        <!-- ========================================== -->
+        <div id="member-login-page" class="page">
+            <div class="card glass-card">
+                <div class="card-header-v2">
+                    <button id="btn-back-from-member" class="btn-back-v2"><i class="fa-solid fa-arrow-left-long"></i></button>
+                    <div>
+                        <h2>Formulir Presisi</h2>
+                        <p>Silakan isi data kedinasan Anda</p>
+                    </div>
+                </div>
+                <form id="login-form" class="modern-form-v2">
                     <div class="form-group-v2">
-                        <label><i class="fa-solid fa-medal"></i> Pangkat</label>
-                        <select id="police-rank" required>
-                            <option value="Jenderal Polisi">Jenderal Polisi</option>
-                            <option value="Komjen Pol">Komjen Pol</option>
-                            <option value="Irjen Pol">Irjen Pol</option>
-                            <option value="Brigjen Pol">Brigjen Pol</option>
-                            <option value="Kombes Pol">Kombes Pol</option>
-                            <option value="AKBP">AKBP</option>
-                            <option value="Kompol">Kompol</option>
-                            <option value="AKP">AKP</option>
-                            <option value="Iptu">Iptu</option>
-                            <option value="Ipda">Ipda</option>
-                            <option value="Aiptu">Aiptu</option>
-                            <option value="Aipda">Aipda</option>
-                            <option value="Bripka">Bripka</option>
-                            <option value="Brigpol">Brigpol</option>
-                            <option value="Briptu">Briptu</option>
-                            <option value="Bripda" selected>Bripda</option>
-                            <option value="Abrip">Abrip</option>
-                            <option value="Abripda">Abripda</option>
-                            <option value="Bharaka">Bharaka</option>
-                            <option value="Bharada">Bharada</option>
+                        <label><i class="fa-solid fa-user"></i> Nama Lengkap / Nama Discord</label>
+                        <input type="text" id="discord-name" placeholder="Masukkan nama lengkap..." required autocomplete="off">
+                    </div>
+                    
+                    <div class="form-grid-v2">
+                        <div class="form-group-v2">
+                            <label><i class="fa-solid fa-medal"></i> Pangkat</label>
+                            <select id="police-rank" required>
+                                <option value="Jenderal Polisi">Jenderal Polisi</option>
+                                <option value="Komjen Pol">Komjen Pol</option>
+                                <option value="Irjen Pol">Irjen Pol</option>
+                                <option value="Brigjen Pol">Brigjen Pol</option>
+                                <option value="Kombes Pol">Kombes Pol</option>
+                                <option value="AKBP">AKBP</option>
+                                <option value="Kompol">Kompol</option>
+                                <option value="AKP">AKP</option>
+                                <option value="Iptu">Iptu</option>
+                                <option value="Ipda">Ipda</option>
+                                <option value="Aiptu">Aiptu</option>
+                                <option value="Aipda">Aipda</option>
+                                <option value="Bripka">Bripka</option>
+                                <option value="Brigpol">Brigpol</option>
+                                <option value="Briptu">Briptu</option>
+                                <option value="Bripda" selected>Bripda</option>
+                                <option value="Abrip">Abrip</option>
+                                <option value="Abripda">Abripda</option>
+                                <option value="Bharaka">Bharaka</option>
+                                <option value="Bharada">Bharada</option>
+                            </select>
+                        </div>
+                        <div class="form-group-v2">
+                            <label><i class="fa-solid fa-id-card"></i> NRP</label>
+                            <input type="text" id="police-nrp" placeholder="NRP Anggota..." autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group-v2">
+                        <label><i class="fa-solid fa-building"></i> Jabatan / Kesatuan Kedinasan</label>
+                        <input type="text" id="police-position" placeholder="Contoh: Banit Reskrim / Ditlantas" required autocomplete="off">
+                    </div>
+
+                    <div class="form-group-v2">
+                        <label><i class="fa-solid fa-circle-check"></i> Status Kehadiran</label>
+                        <select id="attendance-status" required>
+                            <option value="HADIR" selected>🟢 HADIR (Dinas Aktif)</option>
+                            <option value="IZIN">🟡 IZIN (Keperluan Kedinasan/Khusus)</option>
                         </select>
                     </div>
-                    <div class="form-group-v2">
-                        <label><i class="fa-solid fa-id-card"></i> NRP</label>
-                        <input type="text" id="police-nrp" placeholder="NRP Anggota..." autocomplete="off">
-                    </div>
-                </div>
 
-                <div class="form-group-v2">
-                    <label><i class="fa-solid fa-building"></i> Jabatan / Kesatuan Kedinasan</label>
-                    <input type="text" id="police-position" placeholder="Contoh: Banit Reskrim / Ditlantas" required autocomplete="off">
-                </div>
-
-                <div class="form-group-v2">
-                    <label><i class="fa-solid fa-circle-check"></i> Status Kehadiran</label>
-                    <select id="attendance-status" required>
-                        <option value="HADIR" selected>🟢 HADIR (Dinas Aktif)</option>
-                        <option value="IZIN">🟡 IZIN (Keperluan Kedinasan/Khusus)</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-action-submit blue-glow">
-                    <span>KIRIM DATA PRESENSI</span> <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- 3. HALAMAN PENGISIAN SURAT IZIN -->
-    <!-- ========================================== -->
-    <div id="permission-page" class="page">
-        <div class="card glass-card">
-            <div class="timer-banner-v2">
-                <i class="fa-solid fa-stopwatch-20"></i> BATAS WAKTU SISTEM: <span id="timer-countdown">05:00</span>
-            </div>
-            <h2 class="section-title-v2"><i class="fa-solid fa-file-invoice text-gold"></i> Berkas Izin Dinas</h2>
-            <p class="info-text-v2">Lengkapi dokumen pertanggungjawaban alasan ketidakhadiran dinas sebelum sesi ditutup.</p>
-            
-            <form id="permission-form" class="modern-form-v2">
-                <div class="form-group-v2">
-                    <label><i class="fa-solid fa-pen-to-square"></i> Alasan Terperinci</label>
-                    <textarea id="permission-reason" rows="4" placeholder="Tuliskan keterangan kedinasan luar atau alasan izin secara lengkap..." required></textarea>
-                </div>
-                <div class="form-group-v2">
-                    <label><i class="fa-solid fa-cloud-arrow-up"></i> Upload Lampiran Surat Resmi (Opsional)</label>
-                    <input type="file" id="permission-file" class="file-input-v2">
-                </div>
-                <button type="submit" class="btn-action-submit gold-glow">
-                    <span>VERIFIKASI & KIRIM BERKAS</span> <i class="fa-solid fa-circle-check"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- 4. OTENTIKASI LOGIN ADMIN (DUAL-MODE) -->
-    <!-- ========================================== -->
-    <div id="admin-login-page" class="page">
-        <div class="card glass-card text-center">
-            <div class="card-header-v2" style="justify-content: center; position: relative;">
-                <button id="btn-back-from-admin" class="btn-back-v2" style="position: absolute; left: 0;"><i class="fa-solid fa-arrow-left-long"></i></button>
-                <div>
-                    <h2>Gerbang Otentikasi</h2>
-                    <p>Otoritas Pengawasan Internal Provos</p>
-                </div>
-            </div>
-
-            <!-- Selektor Tab Kontrol Gerbang -->
-            <div class="auth-tabs-v2">
-                <button id="tab-auth-finger" class="auth-tab-btn active"><i class="fa-solid fa-fingerprint"></i> Biometrik</button>
-                <button id="tab-auth-manual" class="auth-tab-btn"><i class="fa-solid fa-key"></i> Password</button>
-            </div>
-
-            <!-- MODE 1: SCANNER SIDIK JARI -->
-            <div id="mode-fingerprint" class="auth-mode-content active">
-                <p class="prompt-text-v2">Tempel dan Tahan Jari Anda pada Area Pemindai</p>
-                <div class="fingerprint-wrapper">
-                    <div class="scanner-laser"></div>
-                    <button type="button" id="btn-biometric-scan" class="fingerprint-btn">
-                        <i class="fa-solid fa-fingerprint"></i>
-                    </button>
-                </div>
-                <div id="scan-status" class="scan-status-text">MENUNGGU VERIFIKASI BIOMETRIK...</div>
-            </div>
-
-            <!-- MODE 2: MANUAL PASSWORD -->
-            <div id="mode-manual-pass" class="auth-mode-content">
-                <p class="prompt-text-v2">Masukkan Kode Kunci Keamanan Administrator</p>
-                <form id="admin-auth-form" class="modern-form-v2">
-                    <div class="form-group-v2">
-                        <input type="password" id="admin-secret-code" placeholder="•••••••••••••••••" required class="password-center-v2">
-                    </div>
-                    <button type="submit" class="btn-action-submit gold-glow">
-                        <span>BUKA PANEL UTAMA</span> <i class="fa-solid fa-unlock-keyhole"></i>
+                    <button type="submit" class="btn-action-submit blue-glow">
+                        <span>KIRIM DATA PRESENSI</span> <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
             </div>
         </div>
-    </div>
 
-    <!-- ========================================== -->
-    <!-- 5. PANEL UTAMA & DASHBOARD ADMIN -->
-    <!-- ========================================== -->
-    <div id="admin-page" class="page">
-        <div class="admin-wrapper-v2">
-            <aside class="sidebar-v2">
-                <div class="sidebar-brand-v2">
-                    <div class="brand-icon-v2"><i class="fa-solid fa-user-shield"></i></div>
+        <!-- ========================================== -->
+        <!-- 3. HALAMAN PENGISIAN SURAT IZIN -->
+        <!-- ========================================== -->
+        <div id="permission-page" class="page">
+            <div class="card glass-card">
+                <div class="timer-banner-v2">
+                    <i class="fa-solid fa-stopwatch-20"></i> BATAS WAKTU SISTEM: <span id="timer-countdown">05:00</span>
+                </div>
+                <h2 class="section-title-v2"><i class="fa-solid fa-file-invoice text-gold"></i> Berkas Izin Dinas</h2>
+                <p class="info-text-v2">Lengkapi dokumen pertanggungjawaban alasan ketidakhadiran dinas sebelum sesi ditutup.</p>
+                
+                <form id="permission-form" class="modern-form-v2">
+                    <div class="form-group-v2">
+                        <label><i class="fa-solid fa-pen-to-square"></i> Alasan Terperinci</label>
+                        <textarea id="permission-reason" rows="4" placeholder="Tuliskan keterangan kedinasan luar atau alasan izin secara lengkap..." required></textarea>
+                    </div>
+                    <div class="form-group-v2">
+                        <label><i class="fa-solid fa-cloud-arrow-up"></i> Upload Lampiran Surat Resmi (Opsional)</label>
+                        <input type="file" id="permission-file" class="file-input-v2">
+                    </div>
+                    <button type="submit" class="btn-action-submit gold-glow">
+                        <span>VERIFIKASI & KIRIM BERKAS</span> <i class="fa-solid fa-circle-check"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. OTENTIKASI LOGIN ADMIN (DUAL-MODE) -->
+        <!-- ========================================== -->
+        <div id="admin-login-page" class="page">
+            <div class="card glass-card text-center">
+                <div class="card-header-v2" style="justify-content: center; position: relative;">
+                    <button id="btn-back-from-admin" class="btn-back-v2" style="position: absolute; left: 0;"><i class="fa-solid fa-arrow-left-long"></i></button>
                     <div>
-                        <h3>KONSOL PROVOS</h3>
-                        <span>Dashboard Utama</span>
-                    </div>
-                </div>
-                <nav class="sidebar-menu-v2">
-                    <button class="tab-btn-v2 active" data-tab="tab-riwayat"><i class="fa-solid fa-list-check"></i> Log Absensi</button>
-                    <button class="tab-btn-v2" data-tab="tab-keaktifan"><i class="fa-solid fa-chart-bar"></i> Analisis Personel</button>
-                    <button class="tab-btn-v2" data-tab="tab-prestasi"><i class="fa-solid fa-award"></i> Poin Disiplin</button>
-                    <button class="tab-btn-v2" data-tab="tab-jabatan"><i class="fa-solid fa-network-wired"></i> Distribusi Fungsi</button>
-                    <button class="tab-btn-v2" data-tab="tab-setting"><i class="fa-solid fa-sliders"></i> Config Webhook</button>
-                </nav>
-                <div class="sidebar-footer-v2">
-                    <button id="btn-gate-toggle" class="btn-side-toggle"><i class="fa-solid fa-toggle-on"></i> Gerbang Absen</button>
-                    <button id="btn-admin-logout" class="btn-side-logout"><i class="fa-solid fa-power-off"></i> Keluar Sesi</button>
-                </div>
-            </aside>
-
-            <main class="content-v2">
-                <!-- Tab 1: Log Absensi -->
-                <div id="tab-riwayat" class="tab-content-v2 active">
-                    <div class="content-header-v2">
-                        <div>
-                            <h2>Log Sinkronisasi Real-Time</h2>
-                            <p>Data absensi masuk yang terhubung langsung ke sistem cloud database local</p>
-                        </div>
-                        <div class="header-actions-v2">
-                            <button id="btn-export-excel" class="btn-action-v2 btn-v2-green"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
-                            <button id="btn-delete-daily" class="btn-action-v2 btn-v2-orange"><i class="fa-solid fa-trash-can"></i> Reset Harian</button>
-                            <button id="btn-delete-monthly" class="btn-action-v2 btn-v2-red"><i class="fa-solid fa-circle-exclamation"></i> Clear DB</button>
-                        </div>
-                    </div>
-                    <div class="table-container-v2">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Waktu Log</th><th>Nama Personel</th><th>Pangkat</th><th>Jabatan / Kesatuan</th><th>NRP</th><th>Status</th><th>Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-riwayat"></tbody>
-                        </table>
+                        <h2>Gerbang Otentikasi</h2>
+                        <p>Otoritas Pengawasan Internal Provos</p>
                     </div>
                 </div>
 
-                <!-- Tab 2: Keaktifan -->
-                <div id="tab-keaktifan" class="tab-content-v2">
-                    <h2>Tingkat Keaktifan & Kehadiran Anggota</h2>
-                    <p style="color:var(--t-muted); margin-bottom:20px;">Rasio akumulasi absensi kehadiran dinas harian</p>
-                    <div class="table-container-v2"><table><thead><tr><th>Nama Anggota</th><th>Pangkat</th><th>Total Hadir</th><th>Total Izin</th><th>Rasio Persentase</th></tr></thead><tbody id="tbody-keaktifan"></tbody></table></div>
+                <!-- Pilihan Mode Autentikasi -->
+                <div class="auth-tabs-v2">
+                    <button id="tab-auth-finger" class="auth-tab-btn active"><i class="fa-solid fa-fingerprint"></i> Biometrik</button>
+                    <button id="tab-auth-manual" class="auth-tab-btn"><i class="fa-solid fa-key"></i> Password</button>
                 </div>
 
-                <!-- Tab 3: Prestasi -->
-                <div id="tab-prestasi" class="tab-content-v2">
-                    <h2>Peringkat Poin Kedisiplinan Personel</h2>
-                    <p style="color:var(--t-muted); margin-bottom:20px;">Sistem reward poin berdasarkan tingkat kerajinan apel dinas</p>
-                    <div class="table-container-v2"><table><thead><tr><th>Peringkat</th><th>Nama Personel</th><th>Pangkat</th><th>Akumulasi Poin</th><th>Predikat Provos</th></tr></thead><tbody id="tbody-prestasi"></tbody></table></div>
+                <!-- MODE 1: SCANNER SIDIK JARI -->
+                <div id="mode-fingerprint" class="auth-mode-content active">
+                    <p class="prompt-text-v2">Tempel dan Tahan Jari Anda pada Pemindai</p>
+                    <div class="fingerprint-wrapper">
+                        <div class="scanner-laser"></div>
+                        <button type="button" id="btn-biometric-scan" class="fingerprint-btn">
+                            <i class="fa-solid fa-fingerprint"></i>
+                        </button>
+                    </div>
+                    <div id="scan-status" class="scan-status-text">MENUNGGU VERIFIKASI BIOMETRIK...</div>
                 </div>
 
-                <!-- Tab 4: Distribusi Jabatan -->
-                <div id="tab-jabatan" class="tab-content-v2">
-                    <h2>Kekuatan Personel Per Fungsi Kedinasan</h2>
-                    <p style="color:var(--t-muted); margin-bottom:20px;">Pembagian komposisi jumlah anggota aktif operasional</p>
-                    <div class="table-container-v2"><table><thead><tr><th>Fungsi Jabatan / Kesatuan</th><th>Jumlah Personel Aktif</th><th>Status Kekuatan</th></tr></thead><tbody id="tbody-jabatan"></tbody></table></div>
-                </div>
-
-                <!-- Tab 5: Webhook Settings -->
-                <div id="tab-setting" class="tab-content-v2">
-                    <h2>Pengaturan Jembatan Sinkronisasi Discord</h2>
-                    <p style="color:var(--t-muted); margin-bottom:20px;">Konfigurasi API endpoint saluran webhook pengiriman log teks berkode otomatis</p>
-                    <div class="card glass-card" style="max-width:100%; margin-top:10px; padding: 25px;">
+                <!-- MODE 2: MANUAL PASSWORD -->
+                <div id="mode-manual-pass" class="auth-mode-content">
+                    <p class="prompt-text-v2">Masukkan Kode Kunci Keamanan Administrator</p>
+                    <form id="admin-auth-form" class="modern-form-v2">
                         <div class="form-group-v2">
-                            <label>URL Webhook Discord Aktif</label>
-                            <input type="text" id="webhook-url-input" style="width:100%">
+                            <input type="password" id="admin-secret-code" placeholder="•••••••••••••••••" required class="password-center-v2">
                         </div>
-                        <button id="btn-save-webhook" class="btn-action-submit blue-glow" style="max-width: 220px; padding: 12px 20px; font-size: 0.9rem;">Simpan Konfigurasi</button>
-                    </div>
+                        <button type="submit" class="btn-action-submit gold-glow">
+                            <span>BUKA PANEL UTAMA</span> <i class="fa-solid fa-unlock-keyhole"></i>
+                        </button>
+                    </form>
                 </div>
-            </main>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 5. PANEL UTAMA & DASHBOARD ADMIN -->
+        <!-- ========================================== -->
+        <div id="admin-page" class="page">
+            <div class="admin-wrapper-v2">
+                <aside class="sidebar-v2">
+                    <div class="sidebar-brand-v2">
+                        <div class="brand-icon-v2"><i class="fa-solid fa-user-shield"></i></div>
+                        <div>
+                            <h3>KONSOL PROVOS</h3>
+                            <span>Dashboard Utama</span>
+                        </div>
+                    </div>
+                    <nav class="sidebar-menu-v2">
+                        <button class="tab-btn-v2 active" data-tab="tab-riwayat"><i class="fa-solid fa-list-check"></i> Log Absensi</button>
+                        <button class="tab-btn-v2" data-tab="tab-keaktifan"><i class="fa-solid fa-chart-bar"></i> Analisis Personel</button>
+                        <button class="tab-btn-v2" data-tab="tab-prestasi"><i class="fa-solid fa-award"></i> Poin Disiplin</button>
+                        <button class="tab-btn-v2" data-tab="tab-jabatan"><i class="fa-solid fa-network-wired"></i> Distribusi Fungsi</button>
+                        <button class="tab-btn-v2" data-tab="tab-setting"><i class="fa-solid fa-sliders"></i> Config Webhook</button>
+                    </nav>
+                    <div class="sidebar-footer-v2">
+                        <button id="btn-gate-toggle" class="btn-side-toggle"><i class="fa-solid fa-toggle-on"></i> Gerbang Absen</button>
+                        <button id="btn-admin-logout" class="btn-side-logout"><i class="fa-solid fa-power-off"></i> Keluar Sesi</button>
+                    </div>
+                </aside>
+
+                <main class="content-v2">
+                    <!-- Tab 1: Log Absensi -->
+                    <div id="tab-riwayat" class="tab-content-v2 active">
+                        <div class="content-header-v2">
+                            <div>
+                                <h2>Log Sinkronisasi Real-Time</h2>
+                                <p>Data absensi masuk yang terhubung langsung ke sistem database</p>
+                            </div>
+                            <div class="header-actions-v2">
+                                <button id="btn-export-excel" class="btn-action-v2 btn-v2-green"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                                <button id="btn-delete-daily" class="btn-action-v2 btn-v2-orange"><i class="fa-solid fa-trash-can"></i> Reset Harian</button>
+                                <button id="btn-delete-monthly" class="btn-action-v2 btn-v2-red"><i class="fa-solid fa-circle-exclamation"></i> Clear DB</button>
+                            </div>
+                        </div>
+                        <div class="table-container-v2">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Waktu Log</th><th>Nama Personel</th><th>Pangkat</th><th>Jabatan / Kesatuan</th><th>NRP</th><th>Status</th><th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-riwayat"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Keaktifan -->
+                    <div id="tab-keaktifan" class="tab-content-v2">
+                        <h2>Tingkat Keaktifan & Kehadiran Anggota</h2>
+                        <p style="color:var(--t-muted); margin-bottom:20px;">Rasio akumulasi absensi kehadiran dinas harian</p>
+                        <div class="table-container-v2"><table><thead><tr><th>Nama Anggota</th><th>Pangkat</th><th>Total Hadir</th><th>Total Izin</th><th>Rasio Persentase</th></tr></thead><tbody id="tbody-keaktifan"></tbody></table></div>
+                    </div>
+
+                    <!-- Tab 3: Prestasi -->
+                    <div id="tab-prestasi" class="tab-content-v2">
+                        <h2>Peringkat Poin Kedisiplinan Personel</h2>
+                        <p style="color:var(--t-muted); margin-bottom:20px;">Sistem reward poin berdasarkan tingkat kerajinan apel dinas</p>
+                        <div class="table-container-v2"><table><thead><tr><th>Peringkat</th><th>Nama Personel</th><th>Pangkat</th><th>Akumulasi Poin</th><th>Predikat Provos</th></tr></thead><tbody id="tbody-prestasi"></tbody></table></div>
+                    </div>
+
+                    <!-- Tab 4: Distribusi Jabatan -->
+                    <div id="tab-jabatan" class="tab-content-v2">
+                        <h2>Kekuatan Personel Per Fungsi Kedinasan</h2>
+                        <p style="color:var(--t-muted); margin-bottom:20px;">Pembagian komposisi jumlah anggota aktif operasional</p>
+                        <div class="table-container-v2"><table><thead><tr><th>Fungsi Jabatan / Kesatuan</th><th>Jumlah Personel Aktif</th><th>Status Kekuatan</th></tr></thead><tbody id="tbody-jabatan"></tbody></table></div>
+                    </div>
+
+                    <!-- Tab 5: Webhook Settings -->
+                    <div id="tab-setting" class="tab-content-v2">
+                        <h2>Pengaturan Jembatan Sinkronisasi Discord</h2>
+                        <p style="color:var(--t-muted); margin-bottom:20px;">Konfigurasi API endpoint saluran webhook pengiriman log</p>
+                        <div class="card glass-card" style="max-width:100%; margin-top:10px; padding: 25px;">
+                            <div class="form-group-v2">
+                                <label>URL Webhook Discord Aktif</label>
+                                <input type="text" id="webhook-url-input" style="width:100%">
+                            </div>
+                            <button id="btn-save-webhook" class="btn-action-submit blue-glow" style="max-width: 220px; padding: 12px 20px; font-size: 0.9rem;">Simpan Konfigurasi</button>
+                        </div>
+                    </div>
+                </main>
+            </div>
         </div>
     </div>
 
