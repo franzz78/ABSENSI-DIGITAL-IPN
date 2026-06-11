@@ -1,5 +1,5 @@
 // ==========================================================================
-// CORE JAVASCRIPT SYSTEM - VERIFIKASI SELESAI DIMUAT (ANTI-LOCK)
+// CORE JAVASCRIPT SYSTEM V2.1 - LOCAL SINKRONISASI ENGINE DUAL AUTH
 // ==========================================================================
 
 const ADMIN_USER = "ABSENSIONIPN2026##";
@@ -22,22 +22,103 @@ window.addEventListener('DOMContentLoaded', () => {
     updateGateBtnUI();
 
     // ==========================================
-    // 1. SISTEM NAVIGASI TOMBOL (SPA)
+    // 1. SISTEM NAVIGASI TOMBOL INTERFACE SPA
     // ==========================================
     document.getElementById('btn-go-to-member').addEventListener('click', () => {
         if(!isGateOpen) { 
-            showToast("Akses Ditolak! Server absensi dikunci Provos.", "danger"); 
+            showToast("Akses Ditolak! Server absensi sedang dikunci oleh Provos.", "danger"); 
             return; 
         }
         switchPage('member-login-page');
     });
 
-    document.getElementById('btn-go-to-admin').addEventListener('click', () => switchPage('admin-login-page'));
+    document.getElementById('btn-go-to-admin').addEventListener('click', () => {
+        resetScanState();
+        switchPage('admin-login-page');
+    });
+    
     document.getElementById('btn-back-from-member').addEventListener('click', () => switchPage('welcome-page'));
     document.getElementById('btn-back-from-admin').addEventListener('click', () => switchPage('welcome-page'));
 
     // ==========================================
-    // 2. SUBMIT FORM HANDLERS
+    // 2. SELEKTOR TAB KONTROL GERBANG LOGIN ADMIN
+    // ==========================================
+    const tabFinger = document.getElementById('tab-auth-finger');
+    const tabManual = document.getElementById('tab-auth-manual');
+    const modeFinger = document.getElementById('mode-fingerprint');
+    const modeManual = document.getElementById('mode-manual-pass');
+
+    tabFinger.addEventListener('click', () => {
+        tabFinger.classList.add('active'); tabManual.classList.remove('active');
+        modeFinger.classList.add('active'); modeManual.classList.remove('active');
+    });
+
+    tabManual.addEventListener('click', () => {
+        tabManual.classList.add('active'); tabFinger.classList.remove('active');
+        modeManual.classList.add('active'); modeFinger.classList.remove('active');
+    });
+
+    // ==========================================
+    // 3. LOGIKA SCAN SIDIK JARI (PRESS & HOLD ENGINE)
+    // ==========================================
+    const btnScan = document.getElementById('btn-biometric-scan');
+    const scanStatus = document.getElementById('scan-status');
+    const loginCard = document.querySelector('#admin-login-page .glass-card');
+    let scanTimeout = null;
+
+    function startScanning(e) {
+        e.preventDefault();
+        btnScan.classList.add('scanning');
+        scanStatus.className = "scan-status-text process";
+        scanStatus.innerText = "SEDANG MEMINDAI SIDIK JARI...";
+
+        // Menahan sidik jari selama 2 detik untuk sukses
+        scanTimeout = setTimeout(() => {
+            btnScan.classList.remove('scanning');
+            scanStatus.className = "scan-status-text success";
+            scanStatus.innerText = "OTENTIKASI BIOMETRIK BERHASIL!";
+            
+            setTimeout(() => {
+                switchPage('admin-page');
+                updateDashboardUI();
+                showToast("Akses Diterima via Biometrik Provos.", "success");
+                resetScanState();
+            }, 600);
+        }, 2000); 
+    }
+
+    function cancelScanning() {
+        if (scanTimeout) {
+            clearTimeout(scanTimeout);
+            scanTimeout = null;
+            if (btnScan.classList.contains('scanning')) {
+                btnScan.classList.remove('scanning');
+                loginCard.classList.add('shake-effect');
+                scanStatus.className = "scan-status-text error";
+                scanStatus.innerText = "PEMINDAIAN BATAL! TAHAN JANGAN DILEPAS.";
+                
+                setTimeout(() => { loginCard.classList.remove('shake-effect'); }, 400);
+            }
+        }
+    }
+
+    function resetScanState() {
+        if(scanStatus && btnScan) {
+            scanStatus.className = "scan-status-text";
+            scanStatus.innerText = "MENUNGGU VERIFIKASI BIOMETRIK...";
+            btnScan.classList.remove('scanning');
+        }
+    }
+
+    // Penjaga Event PC Mouse & Mobile Touch
+    btnScan.addEventListener('mousedown', startScanning);
+    btnScan.addEventListener('mouseup', cancelScanning);
+    btnScan.addEventListener('mouseleave', cancelScanning);
+    btnScan.addEventListener('touchstart', startScanning);
+    btnScan.addEventListener('touchend', cancelScanning);
+
+    // ==========================================
+    // 4. SUBMIT VALIDATION FORM HANDLERS
     // ==========================================
     document.getElementById('login-form').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -82,7 +163,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 3. UTILITY DAN AKSI ADMIN BUTTONS
+    // 5. ADMINISTRATIVE CONTROL OPERATIONS
     // ==========================================
     document.getElementById('btn-save-webhook').addEventListener('click', () => {
         const val = document.getElementById('webhook-url-input').value.trim();
@@ -106,16 +187,16 @@ window.addEventListener('DOMContentLoaded', () => {
             databaseAbsensi = []; 
             localStorage.removeItem('polri_db_absensi');
             updateDashboardUI(); 
-            showToast("Database dikosongkan.", "success");
+            showToast("Database berhasil dikosongkan.", "success");
         }
     });
 
     document.getElementById('btn-export-excel').addEventListener('click', () => {
-        if (databaseAbsensi.length === 0) { showToast("Gagal export, data kosong.", "danger"); return; }
+        if (databaseAbsensi.length === 0) { showToast("Gagal export, database kosong.", "danger"); return; }
         const worksheet = XLSX.utils.json_to_sheet(databaseAbsensi);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Absensi");
-        XLSX.writeFile(workbook, "REKAP_ABSENSI_DIGITAL_POLRI.xlsx");
+        XLSX.writeFile(workbook, "REKAP_ABSENSI_DIGITAL_V2.xlsx");
         showToast("Excel berhasil diunduh!", "success");
     });
 
@@ -132,10 +213,10 @@ window.addEventListener('DOMContentLoaded', () => {
         switchPage('welcome-page');
     });
 
-    document.querySelectorAll('.tab-btn').forEach(btn => {
+    document.querySelectorAll('.tab-btn-v2').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn-v2').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content-v2').forEach(c => c.classList.remove('active'));
             btn.classList.add('active');
             const targetTab = document.getElementById(btn.dataset.tab);
             if(targetTab) targetTab.classList.add('active');
@@ -144,7 +225,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// CENTRAL CORE FUNCTIONS
+// CENTRAL SYSTEM HELPER STRINGS
 // ==========================================
 function switchPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -171,7 +252,7 @@ function startPermissionTimer() {
         if(timerDisplay) timerDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         if (timeLeft <= 0) {
             clearInterval(countdownTimer);
-            showToast("Waktu habis! Gagal mengirim surat izin.", "danger");
+            showToast("Waktu habis! Berkas izin kedinasan gagal dikirim.", "danger");
             resetFormInputs();
             switchPage('welcome-page');
         }
@@ -185,13 +266,9 @@ function simpanDataKehadiran(name, rank, pos, nrp, status, ket) {
     updateDashboardUI();
 }
 
-// ==========================================================================
-// FIX ENGINE WEBHOOK: Menggunakan Text Block (Tanpa Spam Emoji, Sangat Rapi)
-// ==========================================================================
 function kirimWebhookDiscord(name, rank, pos, nrp, statusValue) {
     if (!currentWebhookURL) return;
 
-    // Membuat tampilan text block kode yang rapi & simetris
     const textFormatContent = 
         "```text\n" +
         "=========================================\n" +
@@ -209,7 +286,7 @@ function kirimWebhookDiscord(name, rank, pos, nrp, statusValue) {
         embeds: [{
             title: "SISTEM ABSENSI DIGITAL",
             description: textFormatContent,
-            color: statusValue.includes("HADIR") ? 3447003 : 15105570, // Biru Polri untuk Hadir, Amber untuk Izin
+            color: statusValue.includes("HADIR") ? 3447003 : 15105570,
             timestamp: new Date().toISOString(),
             footer: { text: "Otoritas Presensi Terpusat • RI" }
         }]
@@ -271,10 +348,13 @@ function updateGateBtnUI() {
     const gateBtn = document.getElementById('btn-gate-toggle');
     if(!gateBtn) return;
     if(isGateOpen) {
-        gateBtn.className = "btn-sidebar-action btn-blue-action";
+        gateBtn.className = "btn-side-toggle";
         gateBtn.innerHTML = '<i class="fa-solid fa-toggle-on"></i> Gerbang: BUKA';
+        gateBtn.style.background = "rgba(56, 189, 248, 0.05)";
+        gateBtn.style.color = "var(--neon-blue)";
+        gateBtn.style.borderColor = "rgba(56, 189, 248, 0.2)";
     } else {
-        gateBtn.className = "btn-sidebar-action btn-danger-action";
+        gateBtn.className = "btn-side-logout";
         gateBtn.innerHTML = '<i class="fa-solid fa-toggle-off"></i> Gerbang: KUNCI';
     }
 }
@@ -285,4 +365,4 @@ function resetFormInputs() {
     document.getElementById('police-nrp').value = "";
     document.getElementById('permission-reason').value = "";
     document.getElementById('permission-file').value = "";
-                                        }
+}
