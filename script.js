@@ -136,7 +136,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     if(active_webhook) {
         const discordFormat = {
             embeds: [{
-                title: `🔔 NOTIFIKASI LOG ABSENSI MASUK - ${payloadData.hari}`,
+                title: `📍NOTIFIKASI LOG ABSENSI MASUK,
                 color: 3066993,
                 fields: [
                     { name: "Nama Anggota", value: payloadData.nama, inline: true },
