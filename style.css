@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DESIGN INTERFACE SYSTEM V2.5 - MASTER CSS STYLE
+   DESIGN INTERFACE SYSTEM V2.7 - MASTER CSS STYLE WITH LOGO
    ========================================================================== */
 :root {
     --bg-light: #f4f6f9;
@@ -16,7 +16,7 @@ body { background-color: var(--bg-light); color: var(--t-dark); overflow-x: hidd
 
 .main-wrapper-app { padding-top: 60px; width: 100%; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-/* Running Teks Atas */
+/* Teks Berjalan Atas */
 .marquee-container {
     width: 100%; background: #ffffff; color: var(--maroon-primary); padding: 10px 0;
     font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 0.78rem;
@@ -29,44 +29,76 @@ body { background-color: var(--bg-light); color: var(--t-dark); overflow-x: hidd
     100% { transform: translate3d(-100%, 0, 0); }
 }
 
-/* Pola Grid Titik Latar Belakang */
+/* Pola Grid Titik */
 .dot-matrix-bg {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
     background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
     background-size: 24px 24px; opacity: 0.8;
 }
 
-/* Halaman Tunggal Router */
-.page { display: none; width: 100%; justify-content: center; padding: 15px; }
-.page.active { display: flex; }
+/* ==========================================================================
+   ANIMASI SMOOTH TRANSISI HALAMAN & INTERAKSI MIKRO
+   ========================================================================== */
+.page { 
+    display: none; 
+    width: 100%; 
+    justify-content: center; 
+    padding: 15px; 
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.page.active { 
+    display: flex; 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
 
-/* Struktur Frame Putih Utama */
+/* Efek Transisi klik tombol */
+button, select, input {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+button:active {
+    transform: scale(0.96) !important;
+}
+
+/* Frame Putih Utama */
 .school-card {
     background: var(--card-bg);
     border-radius: 40px;
     padding: 40px 30px;
     width: 100%;
     max-width: 440px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.04);
 }
 
+/* Pengaturan Gaya Ukuran Logo IPN */
 .logo-container { margin-bottom: 20px; display: flex; justify-content: center; }
-#app-logo { max-height: 110px; object-fit: contain; }
+.app-logo-official {
+    max-height: 110px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
+}
+.admin-mini-logo {
+    max-height: 80px !important;
+}
 
 .main-title-school { font-size: 1.6rem; font-weight: 800; color: #1e293b; line-height: 1.25; margin-bottom: 6px; }
 .subtitle-school { color: #94a3b8; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 30px; text-transform: uppercase; }
 
-/* Komponen Kontrol Tombol */
+/* Desain Komponen Tombol */
 .welcome-buttons-school { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 .btn-primary-maroon {
     width: 100%; height: 54px; background: var(--maroon-primary); color: #ffffff;
     border: none; border-radius: 50px; font-size: 0.95rem; font-weight: 700;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 6px 16px rgba(138, 28, 28, 0.15); transition: all 0.2s;
+    box-shadow: 0 6px 20px rgba(138, 28, 28, 0.2); 
     text-transform: uppercase; letter-spacing: 0.5px;
 }
-.btn-primary-maroon:hover { background: var(--maroon-hover); transform: translateY(-1px); }
+.btn-primary-maroon:hover { background: var(--maroon-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(138, 28, 28, 0.3); }
 .btn-text-only { background: transparent; border: none; color: #1e293b; font-size: 0.92rem; font-weight: 700; padding: 10px; cursor: pointer; }
+.btn-text-only:hover { color: var(--maroon-primary); }
 
 .developer-tag-v2 { margin-top: 25px; font-size: 0.75rem; color: #cbd5e1; font-weight: 600; }
 .developer-tag-v2 span { color: var(--maroon-primary); font-weight: 700; }
@@ -76,51 +108,38 @@ body { background-color: var(--bg-light); color: var(--t-dark); overflow-x: hidd
 .card-header-v2 h2 { font-size: 1.25rem; font-weight: 800; color: #1e293b; }
 .card-header-v2 p { font-size: 0.8rem; color: var(--t-muted); font-weight: 700; }
 .btn-back-v2 { background: #fff; border: 1px solid #e2e8f0; width: 36px; height: 36px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.btn-back-v2:hover { background: #f8fafc; border-color: #cbd5e1; }
 
-/* Elemen Input Form */
+/* Elemen Input */
 .modern-form-v2 { display: flex; flex-direction: column; gap: 15px; }
 .form-group-v2 { display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .form-group-v2 label { font-size: 0.8rem; font-weight: 700; color: #475569; padding-left: 4px; }
-.form-group-v2 input, .form-group-v2 select { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 50px; outline: none; font-size: 0.88rem; font-weight: 600; color: #334155; }
-.form-group-v2 input:focus, .form-group-v2 select:focus { border-color: var(--maroon-primary); background: #fff; }
+.form-group-v2 input, .form-group-v2 select { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px 18px; border-radius: 50px; outline: none; font-size: 0.88rem; font-weight: 600; color: #334155; }
+.form-group-v2 input:focus, .form-group-v2 select:focus { border-color: var(--maroon-primary); background: #fff; box-shadow: 0 0 0 4px rgba(138, 28, 28, 0.06); }
 
 /* Modul Box Gambar Galeri */
 .image-upload-box-v2 { width: 100%; display: flex; flex-direction: column; gap: 8px; }
-.preview-box-v2 { width: 100%; height: 170px; background: #000000; border-radius: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; color: #64748b; font-size: 0.85rem; font-weight: 600; }
+.preview-box-v2 { width: 100%; height: 170px; background: #000000; border-radius: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; color: #64748b; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(0,0,0,0.03); }
 #uploaded-image-preview { width: 100%; height: 100%; object-fit: cover; }
 .btn-grid-dark-upload { background: #334155; color: #fff; border: none; padding: 14px; border-radius: 50px; font-weight: 700; font-size: 0.88rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.btn-grid-dark-upload:hover { background: #1e293b; }
 
-/* Keamanan Pemindai Otentikasi */
-.auth-tabs-v2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 20px; }
-.auth-tab-btn { background: transparent; border: none; color: #64748b; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.8rem; }
-.auth-tab-btn.active { background: #ffffff; color: var(--maroon-primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.auth-mode-content { display: none; }
-.auth-mode-content.active { display: block; }
 .prompt-text-v2 { color: var(--t-muted); font-size: 0.8rem; margin-bottom: 15px; font-weight: 600; }
-.password-center-v2 { text-align: center; font-size: 1.2rem !important; letter-spacing: 4px; }
-
-.fingerprint-wrapper { position: relative; width: 90px; height: 90px; margin: 15px auto; display: flex; align-items: center; justify-content: center; }
-.fingerprint-btn { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #e2e8f0; color: var(--maroon-primary); font-size: 2.2rem; cursor: pointer; background: #fff; }
-.fingerprint-btn.scanning { background: #fef2f2; border-color: var(--maroon-primary); }
-.scanner-laser { position: absolute; top: 10px; left: 5px; width: 80px; height: 2px; background: var(--maroon-primary); display: none; }
-.fingerprint-btn.scanning ~ .scanner-laser { display: block; animation: laserScan 1.5s infinite ease-in-out; }
-@keyframes laserScan { 0%, 100% { top: 10px; } 50% { top: 80px; } }
-.scan-status-text { font-size: 0.75rem; font-weight: bold; color: var(--t-muted); }
+.password-center-v2 { text-align: center; font-size: 1.2rem !important; letter-spacing: 6px; }
 
 /* ==========================================================================
-   ADMIN KONSOL GRID LAYOUT CAPSULE DESIGN
+   ADMIN KONSOL GRID LAYOUT KAPSUL
    ========================================================================== */
 .admin-grid-card { max-width: 440px !important; padding: 35px 25px !important; }
 .grid-row-v2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; width: 100%; }
-.full-row-v2 { width: 100%; margin-bottom: 12px; }
 
 .admin-grid-card button[class^="btn-grid-"] {
     border: none; font-size: 0.85rem; font-weight: 700; color: #ffffff;
     padding: 18px 8px; border-radius: 40px; cursor: pointer;
-    transition: all 0.2s ease; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     display: flex; align-items: center; justify-content: center; line-height: 1.2;
 }
-.admin-grid-card button[class^="btn-grid-"]:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); }
+.admin-grid-card button[class^="btn-grid-"]:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
 
 /* Pewarnaan Kode Tombol */
 .btn-grid-dark { background: #334155; }
@@ -131,29 +150,21 @@ body { background-color: var(--bg-light); color: var(--t-dark); overflow-x: hidd
 .btn-grid-magenta { background: #831843; }
 .btn-grid-brown { background: #92400e; }
 
-/* Desain Khusus Putih Atur Biometrik */
-.btn-grid-biometric {
-    width: 100%; background: #ffffff !important; color: #475569 !important;
-    border: 1px solid #e2e8f0 !important; padding: 15px 20px !important;
-    border-radius: 40px; font-size: 0.88rem !important; font-weight: 700;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02) !important;
-    display: flex; justify-content: center; align-items: center; gap: 8px;
-}
-
 /* Modal View Log */
-.modal-overlay-v2 { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 15000; display: none; align-items: center; justify-content: center; padding: 15px; }
-.modal-overlay-v2.active { display: flex; }
-.modal-content-v2 { background: #fff; border-radius: 24px; padding: 25px; width: 100%; max-width: 650px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+.modal-overlay-v2 { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.3); backdrop-filter: blur(4px); z-index: 15000; display: none; align-items: center; justify-content: center; padding: 15px; opacity: 0; transition: opacity 0.3s ease; }
+.modal-overlay-v2.active { display: flex; opacity: 1; }
+.modal-content-v2 { background: #fff; border-radius: 28px; padding: 25px; width: 100%; max-width: 650px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); transform: scale(0.95); transition: transform 0.3s ease; }
+.modal-overlay-v2.active .modal-content-v2 { transform: scale(1); }
 .modal-header-v2 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .modal-header-v2 h3 { font-size: 1.1rem; font-weight: 800; }
 
-.table-container-v2 { border: 1px solid var(--border-silent); border-radius: 12px; overflow: hidden; }
+.table-container-v2 { border: 1px solid var(--border-silent); border-radius: 16px; overflow: hidden; }
 table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; }
-th, td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+th, td { padding: 14px; border-bottom: 1px solid #f1f5f9; }
 th { background: #f8fafc; font-weight: 700; color: #64748b; text-transform: uppercase; font-size: 0.68rem; }
 .badge { padding: 3px 8px; border-radius: 10px; font-weight: 800; font-size: 0.68rem; background: #d1fae5; color: #065f46; }
 
 /* Toast Engine */
 #notification-container { position: fixed; top: 65px; right: 20px; z-index: 20000; display: flex; flex-direction: column; gap: 6px; }
-.toast { background: #fff; border-left: 4px solid var(--maroon-primary); padding: 12px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); font-size: 0.8rem; font-weight: 700; min-width: 250px; animation: slideIn 0.2s ease; }
-@keyframes slideIn { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.toast { background: #fff; border-left: 4px solid var(--maroon-primary); padding: 14px 20px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); font-size: 0.82rem; font-weight: 700; min-width: 260px; animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
