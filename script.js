@@ -1,5 +1,5 @@
 // ==========================================================================
-// CORE JAVASCRIPT SYSTEM V2.1 - LOCAL SINKRONISASI ENGINE DUAL AUTH
+// CORE JAVASCRIPT SYSTEM V2.2 - LOCAL SINKRONISASI ENGINE DUAL AUTH
 // ==========================================================================
 
 const ADMIN_USER = "ABSENSIONIPN2026##";
@@ -55,8 +55,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
     tabManual.addEventListener('click', () => {
         tabManual.classList.add('active'); tabFinger.classList.remove('active');
-        modeManual.classList.add('active'); modeFinger.classList.remove('active');
+        modeManual.classList.add('active'); modeManual.classList.remove('active');
+        modeManual.classList.add('active'); // Sinkronisasi manual container aktif
     });
+
+    // Perbaikan Trigger Tab Kontrol Manual Toggle Virtual Array
+    if(tabManual && tabFinger) {
+        tabManual.onclick = () => {
+            tabManual.className = "auth-tab-btn active"; tabFinger.className = "auth-tab-btn";
+            modeManual.className = "auth-mode-content active"; modeFinger.className = "auth-mode-content";
+        }
+        tabFinger.onclick = () => {
+            tabFinger.className = "auth-tab-btn active"; tabManual.className = "auth-tab-btn";
+            modeFinger.className = "auth-mode-content active"; modeManual.className = "auth-mode-content";
+        }
+    }
 
     // ==========================================
     // 3. LOGIKA SCAN SIDIK JARI (PRESS & HOLD ENGINE)
@@ -105,17 +118,19 @@ window.addEventListener('DOMContentLoaded', () => {
     function resetScanState() {
         if(scanStatus && btnScan) {
             scanStatus.className = "scan-status-text";
-            scanStatus.innerText = "MENUNGGU VERIFIKASI BIOMETRIK...";
+            scanStatus.innerText = "MENUNGGU VERIFIKASI BIOMETRIK... (TAHAN 2 DETIK)";
             btnScan.classList.remove('scanning');
         }
     }
 
     // Penjaga Event PC Mouse & Mobile Touch
-    btnScan.addEventListener('mousedown', startScanning);
-    btnScan.addEventListener('mouseup', cancelScanning);
-    btnScan.addEventListener('mouseleave', cancelScanning);
-    btnScan.addEventListener('touchstart', startScanning);
-    btnScan.addEventListener('touchend', cancelScanning);
+    if(btnScan) {
+        btnScan.addEventListener('mousedown', startScanning);
+        btnScan.addEventListener('mouseup', cancelScanning);
+        btnScan.addEventListener('mouseleave', cancelScanning);
+        btnScan.addEventListener('touchstart', startScanning);
+        btnScan.addEventListener('touchend', cancelScanning);
+    }
 
     // ==========================================
     // 4. SUBMIT VALIDATION FORM HANDLERS
@@ -286,7 +301,7 @@ function kirimWebhookDiscord(name, rank, pos, nrp, statusValue) {
         embeds: [{
             title: "SISTEM ABSENSI DIGITAL",
             description: textFormatContent,
-            color: statusValue.includes("HADIR") ? 3447003 : 15105570,
+            color: statusValue.includes("HADIR") ? 2389237 : 14251782,
             timestamp: new Date().toISOString(),
             footer: { text: "Otoritas Presensi Terpusat • RI" }
         }]
@@ -332,14 +347,14 @@ function updateDashboardUI() {
     const arrPrestasi = [...arrKeaktifan].sort((a,b) => b.hadir - a.hadir);
     arrPrestasi.forEach((user, idx) => {
         const predikat = user.hadir > 10 ? "TELADAN UTAMA" : "DISIPLIN";
-        if(tbodyPrestasi) tbodyPrestasi.innerHTML += `<tr><td>#${idx + 1}</td><td>${user.nama}</td><td>${user.pangkat}</td><td>${user.hadir * 10} Poin</td><td style="color:#10b981;font-weight:bold;">${predikat}</td></tr>`;
+        if(tbodyPrestasi) tbodyPrestasi.innerHTML += `<tr><td>#${idx + 1}</td><td>${user.nama}</td><td>${user.pangkat}</td><td>${user.hadir * 10} Poin</td><td style="color:#059669;font-weight:bold;">${predikat}</td></tr>`;
     });
 
     const tbodyJabatan = document.getElementById('tbody-jabatan');
     if(tbodyJabatan) {
         tbodyJabatan.innerHTML = "";
         Object.keys(rekapJabatan).forEach(jab => {
-            tbodyJabatan.innerHTML += `<tr><td>${jab}</td><td>${rekapJabatan[jab]} Personel</td><td><span style="color:#38bdf8;">Siaga Operasional</span></td></tr>`;
+            tbodyJabatan.innerHTML += `<tr><td>${jab}</td><td>${rekapJabatan[jab]} Personel</td><td><span style="color:#2563eb;">Siaga Operasional</span></td></tr>`;
         });
     }
 }
@@ -350,9 +365,9 @@ function updateGateBtnUI() {
     if(isGateOpen) {
         gateBtn.className = "btn-side-toggle";
         gateBtn.innerHTML = '<i class="fa-solid fa-toggle-on"></i> Gerbang: BUKA';
-        gateBtn.style.background = "rgba(56, 189, 248, 0.05)";
+        gateBtn.style.background = "rgba(37, 99, 235, 0.05)";
         gateBtn.style.color = "var(--neon-blue)";
-        gateBtn.style.borderColor = "rgba(56, 189, 248, 0.2)";
+        gateBtn.style.borderColor = "rgba(37, 99, 235, 0.2)";
     } else {
         gateBtn.className = "btn-side-logout";
         gateBtn.innerHTML = '<i class="fa-solid fa-toggle-off"></i> Gerbang: KUNCI';
