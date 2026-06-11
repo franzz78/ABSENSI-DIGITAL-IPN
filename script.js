@@ -1,7 +1,13 @@
-const ADMIN_USER = "ABSENSIONIPN2026##"; // Update Token Pengaman Baru
+// ==========================================================================
+// CONFIGURATION ENGINE - ABSENSI DIGITAL POLRI PRESISI
+// ==========================================================================
 
+const ADMIN_USER = "ABSENSIONIPN2026##"; // Token Akses Utama Provos
+
+// Sinkronisasi Memori Lokal
 let databaseAbsensi = JSON.parse(localStorage.getItem('polri_db_absensi')) || [];
-let currentWebhookURL = localStorage.getItem('polri_webhook_url') || "";
+// Default Webhook milik Anda langsung terpasang di sini
+let currentWebhookURL = localStorage.getItem('polri_webhook_url') || "https://discord.com/api/webhooks/1500117207366238340/hMkE7VzL7OBCO9JnHFmCCusOFUjXjcP123j9emE4o79i26UJdZzsDTw2cyoYdGSKBw-4";
 
 let currentUser = "";
 let currentRank = "";
@@ -10,9 +16,9 @@ let currentNrp = "";
 
 let isGateOpen = localStorage.getItem('exambro_gate_status') !== 'closed';
 let countdownTimer = null;
-let timeLeft = 300;
+let timeLeft = 300; // Timer Pembatasan Izin 5 Menit
 
-// DOM Selector
+// DOM Selector Pages & Form Elemen
 const welcomePage = document.getElementById('welcome-page');
 const memberLoginPage = document.getElementById('member-login-page');
 const permissionPage = document.getElementById('permission-page');
@@ -25,9 +31,10 @@ const adminAuthForm = document.getElementById('admin-auth-form');
 const adminSecretCode = document.getElementById('admin-secret-code');
 const webhookUrlInput = document.getElementById('webhook-url-input');
 
+// Setup Tampilan Webhook di Form Pengaturan
 if(currentWebhookURL) webhookUrlInput.value = currentWebhookURL;
 
-// ROUTER NAVIGATION EVENT
+// ROUTER SYSTEM EVENTS
 document.getElementById('btn-go-to-member').addEventListener('click', () => {
     if(!isGateOpen) { showToast("Akses Ditolak! Server absensi sedang dikunci Admin.", "danger"); return; }
     switchPage('member-login-page');
@@ -41,7 +48,7 @@ function switchPage(pageId) {
     document.getElementById(pageId).classList.add('active');
 }
 
-// --- ENGINE TOAST NOTIFIKASI ---
+// TOAST ENGINE NOTIFIKASI
 function showToast(message, type = 'info') {
     const container = document.getElementById('notification-container');
     const toast = document.createElement('div');
@@ -51,7 +58,7 @@ function showToast(message, type = 'info') {
     setTimeout(() => { toast.remove(); }, 4000);
 }
 
-// --- SUBMIT ABSENSI UTAMA ---
+// LOGIKA INPUT DATA & PENENTUAN STATUS (HADIR / IZIN)
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     currentUser = document.getElementById('discord-name').value.trim();
@@ -61,21 +68,19 @@ loginForm.addEventListener('submit', (e) => {
     const status = document.getElementById('attendance-status').value;
 
     if (status === "HADIR") {
-        // Alur Hadir Langsung Berhasil (Tanpa Google Form Iframe)
         simpanDataKehadiran(currentUser, currentRank, currentPosition, currentNrp, "HADIR", "Dinas Aktif");
-        kirimWebhookDiscord(currentUser, currentRank, currentPosition, "HADIR");
+        kirimWebhookDiscord(currentUser, currentRank, currentPosition, currentNrp, "HADIR");
         
         showToast("Absensi HADIR sukses terkirim ke sistem & Discord!", "success");
         resetFormInputs();
-        switchPage('welcome-page'); // Otomatis kembali ke menu utama
+        switchPage('welcome-page'); 
     } else {
-        // Masuk alur izin + timer 5 menit berjalan
         switchPage('permission-page');
         startPermissionTimer();
     }
 });
 
-// --- LOGIKA TIMER DIBATASI 5 MENIT ---
+// ENGINE COUNTDOWN SURAT IZIN (5 MENIT)
 function startPermissionTimer() {
     timeLeft = 300; 
     const timerDisplay = document.getElementById('timer-countdown');
@@ -91,14 +96,14 @@ function startPermissionTimer() {
         
         if (timeLeft <= 0) {
             clearInterval(countdownTimer);
-            showToast("Waktu habis! Anda gagal melengkapi surat izin dalam 5 menit.", "danger");
+            showToast("Waktu habis! Anda gagal melengkapi surat izin.", "danger");
             resetFormInputs();
             switchPage('welcome-page');
         }
     }, 1000);
 }
 
-// --- SUBMIT FORM SURAT IZIN BEFORE 5 MINUTES ---
+// PROSES SUBMIT SURAT IZIN
 permissionForm.addEventListener('submit', (e) => {
     e.preventDefault();
     clearInterval(countdownTimer); 
@@ -106,14 +111,14 @@ permissionForm.addEventListener('submit', (e) => {
     const alasan = document.getElementById('permission-reason').value.trim();
     
     simpanDataKehadiran(currentUser, currentRank, currentPosition, currentNrp, "IZIN", alasan);
-    kirimWebhookDiscord(currentUser, currentRank, currentPosition, `IZIN (${alasan})`);
+    kirimWebhookDiscord(currentUser, currentRank, currentPosition, currentNrp, `IZIN (${alasan})`);
     
     showToast("Berkas Dokumen Izin berhasil diverifikasi dan dikirim!", "success");
     resetFormInputs();
     switchPage('welcome-page');
 });
 
-// --- ENGINE SIMPAN DATA KE DATABASE LOCAL ---
+// LOCAL STORAGE PERSISTENCE ENGINE
 function simpanDataKehadiran(name, rank, pos, nrp, status, ket) {
     const waktuSekarang = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
     const logBaru = { waktu: waktuSekarang, nama: name, pangkat: rank, jabatan: pos, nrp: nrp, status: status, keterangan: ket };
@@ -123,15 +128,27 @@ function simpanDataKehadiran(name, rank, pos, nrp, status, ket) {
     updateDashboardUI();
 }
 
-// --- INTEGRASI WEBHOOK DISCORD ---
-function kirimWebhookDiscord(name, rank, pos, statusValue) {
+// SINKRONISASI INTEGRASI DISCORD EMBED PAYLOAD
+function kirimWebhookDiscord(name, rank, pos, nrp, statusValue) {
     if (!currentWebhookURL) {
-        console.log("URL Webhook Discord belum dikonfigurasi.");
+        console.log("Konfigurasi Webhook Discord belum disetel.");
         return;
     }
 
     const payload = {
-        content: `**ABSENSI ANGGOTA POLRI**\n\n**NAMA:** ${name}\n**PANGKAT:** ${rank}\n**JABATAN:** ${pos}\n**ABSEN:** ${statusValue}\n*Diproses otomatis oleh Sistem Presensi Digital*`
+        embeds: [{
+            title: "🚨 LAPORAN PRESENSI DIGITAL ANGGOTA 🚨",
+            color: statusValue.includes("HADIR") ? 1352433 : 14251782, // Hijau (Hadir) / Kuning-Emas (Izin)
+            fields: [
+                { name: "👤 Nama Anggota", value: name, inline: true },
+                { name: "🏅 Pangkat", value: rank, inline: true },
+                { name: "💼 Jabatan / Kesatuan", value: pos, inline: false },
+                { name: "🆔 NRP", value: nrp, inline: true },
+                { name: "📌 Status Kehadiran", value: `**${statusValue}**`, inline: true }
+            ],
+            timestamp: new Date().toISOString(),
+            footer: { text: "Sistem Absensi Digital Polri • Presisi" }
+        }]
     };
 
     fetch(currentWebhookURL, {
@@ -139,11 +156,11 @@ function kirimWebhookDiscord(name, rank, pos, statusValue) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
     }).then(res => {
-        if(res.ok) console.log("Berhasil mengirim laporan ke Discord.");
-    }).catch(err => console.error("Gagal sinkronisasi webhook:", err));
+        if(res.ok) console.log("Laporan presensi diteruskan ke Discord Server.");
+    }).catch(err => console.error("Kegagalan pengiriman webhook:", err));
 }
 
-// --- OTENTIKASI ADMIN ---
+// VERIFIKASI LOGIN ADMIN PROVOS
 adminAuthForm.addEventListener('submit', (e) => {
     e.preventDefault();
     if (adminSecretCode.value.trim() === ADMIN_USER) {
@@ -151,7 +168,7 @@ adminAuthForm.addEventListener('submit', (e) => {
         updateDashboardUI();
         showToast("Selamat datang di Konsol Utama Provos.", "success");
     } else {
-        showToast("Token Keamanan Salah!", "danger");
+        showToast("Token Keamanan Otoritas Salah!", "danger");
     }
 });
 
@@ -161,7 +178,7 @@ document.getElementById('btn-save-webhook').addEventListener('click', () => {
     showToast("URL Webhook Discord berhasil diperbarui!", "success");
 });
 
-// --- MANAGEMENT ENGINE: NAVIGASI TAB MENU DASHBOARD ADMIN ---
+// TAB PANEL DASHBOARD SWITCH NAVIGATION
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -172,14 +189,14 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-// --- KONSOL AKSI MENU: HAPUS ABSENSI HARIAN & BULANAN ---
+// RESET & CLEAR DATA CONTROLLER
 document.getElementById('btn-delete-daily').addEventListener('click', () => {
     if(confirm("Apakah Anda yakin ingin menghapus data absensi HARI INI?")) {
         const hariIni = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' });
         databaseAbsensi = databaseAbsensi.filter(item => !item.waktu.includes(hariIni));
         localStorage.setItem('polri_db_absensi', JSON.stringify(databaseAbsensi));
         updateDashboardUI();
-        showToast("Data log absensi harian berhasil dibersihkan.", "success");
+        showToast("Data log harian dibersihkan.", "success");
     }
 });
 
@@ -192,20 +209,20 @@ document.getElementById('btn-delete-monthly').addEventListener('click', () => {
     }
 });
 
-// --- EXPORT DATA TO EXCEL ENGINE (SHEETJS) ---
+// SHEETJS ADVANCED EXCEL REPORT EXPORT
 document.getElementById('btn-export-excel').addEventListener('click', () => {
     if (databaseAbsensi.length === 0) {
-        showToast("Gagal export, data masih kosong.", "danger");
+        showToast("Gagal export, data rekapitulasi kosong.", "danger");
         return;
     }
     const worksheet = XLSX.utils.json_to_sheet(databaseAbsensi);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Absensi Polri");
     XLSX.writeFile(workbook, "REKAP_ABSENSI_DIGITAL_POLRI.xlsx");
-    showToast("File Excel berhasil di-unduh!", "success");
+    showToast("File Laporan Excel berhasil diunduh!", "success");
 });
 
-// --- RE-RENDER/UPDATE DASHBOARD VIEW ---
+// ENGINE RE-RENDER ENGINE UNTUK INTEGRASI STATISTIK VIEW
 function updateDashboardUI() {
     const tbodyRiwayat = document.getElementById('tbody-riwayat');
     tbodyRiwayat.innerHTML = "";
@@ -260,10 +277,11 @@ function updateDashboardUI() {
     });
 }
 
+// BUKA-TUTUP AKSES GERBANG ABSEN OLEH ADMIN
 document.getElementById('btn-gate-toggle').addEventListener('click', () => {
     isGateOpen = !isGateOpen;
     localStorage.setItem('exambro_gate_status', isGateOpen ? 'open' : 'closed');
-    showToast(`Status Gerbang Absensi: ${isGateOpen ? 'BUKA' : 'KUNCI'}`, "info");
+    showToast(`Status Gerbang Absensi: ${isGateOpen ? 'DIBUKA' : 'DIKUNCI PROVOS'}`, "info");
 });
 
 document.getElementById('btn-admin-logout').addEventListener('click', () => {
@@ -277,5 +295,4 @@ function resetFormInputs() {
     document.getElementById('police-nrp').value = "";
     document.getElementById('permission-reason').value = "";
     document.getElementById('permission-file').value = "";
-}
-
+            }
