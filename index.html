@@ -4,25 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Absensi Digital Anggota - POLRI Presisi</title>
-    <!-- FontAwesome untuk Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- SheetJS untuk Export Excel -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Container Utama Animasi Background -->
     <div class="animated-bg"></div>
-
-    <!-- Container Toast Notifikasi -->
     <div id="notification-container"></div>
 
-    <!-- ========================================== -->
-    <!-- 1. HALAMAN AWAL (WELCOME SCREEN) -->
-    <!-- ========================================== -->
     <div id="welcome-page" class="page active">
         <div class="card modern-card text-center">
             <div class="police-emblem-glow">
@@ -46,9 +36,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 2. FORM ABSENSI ANGGOTA -->
-    <!-- ========================================== -->
     <div id="member-login-page" class="page">
         <div class="card modern-card">
             <div class="card-header">
@@ -113,9 +100,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 3. HALAMAN PENGISIAN SURAT IZIN -->
-    <!-- ========================================== -->
     <div id="permission-page" class="page">
         <div class="card modern-card">
             <div class="timer-banner">
@@ -127,11 +111,11 @@
             <form id="permission-form">
                 <div class="form-group">
                     <label><i class="fa-solid fa-comment-dots"></i> Alasan Izin Terperinci</label>
-                    <textarea id="permission-reason" rows="4" placeholder="Tuliskan keterangan izin secara jelas dan transparan..." required></textarea>
+                    <textarea id="permission-reason" rows="4" placeholder="Tuliskan keterangan izin secara jelas..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label><i class="fa-solid fa-file-shield"></i> Lampiran Surat Resmi (Opsional)</label>
-                    <input type="file" id="permission-file" class="file-input-custom">
+                    <input type="file" id="permission-file">
                 </div>
                 <button type="submit" class="btn-modern btn-submit-permission">
                     <i class="fa-solid fa-check-double"></i> VERIFIKASI & KIRIM IZIN
@@ -140,9 +124,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 4. OTENTIKASI LOGIN ADMIN -->
-    <!-- ========================================== -->
     <div id="admin-login-page" class="page">
         <div class="card modern-card text-center">
             <div class="card-header">
@@ -154,20 +135,15 @@
                 <div class="form-group">
                     <input type="password" id="admin-secret-code" placeholder="•••••••••••••••••" required style="text-align: center; font-size: 1.2rem; letter-spacing: 3px;">
                 </div>
-                <button type="submit" class="btn-modern btn-glow-gold">
+                <button type="submit" class="btn-modern btn-glow-gold" style="background:var(--gold);">
                     <i class="fa-solid fa-key"></i> BUKA KONSOL ADMIN
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 5. PANEL UTAMA & DASHBOARD ADMIN -->
-    <!-- ========================================== -->
     <div id="admin-page" class="page">
         <div class="admin-wrapper">
-            
-            <!-- Sidebar Navigasi Admin -->
             <aside class="admin-sidebar">
                 <div class="sidebar-brand">
                     <i class="fa-solid fa-user-gear"></i>
@@ -189,10 +165,7 @@
                 </div>
             </aside>
 
-            <!-- Area Utama Dashboard Konten -->
             <main class="admin-content">
-                
-                <!-- TAB 1: RIWAYAT / LOG ABSENSI -->
                 <div id="tab-riwayat" class="tab-content active">
                     <div class="content-header">
                         <h2><i class="fa-solid fa-clock-rotate-left"></i> Log Sinkronisasi Real-Time</h2>
@@ -206,13 +179,7 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Waktu Log</th>
-                                    <th>Nama Personel</th>
-                                    <th>Pangkat</th>
-                                    <th>Jabatan / Kesatuan</th>
-                                    <th>NRP</th>
-                                    <th>Status</th>
-                                    <th>Keterangan / Berkas</th>
+                                    <th>Waktu Log</th><th>Nama Personel</th><th>Pangkat</th><th>Jabatan / Kesatuan</th><th>NRP</th><th>Status</th><th>Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-riwayat"></tbody>
@@ -220,80 +187,36 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: ANALISIS KEEFEKTIFAN / KEAKTIFAN -->
                 <div id="tab-keaktifan" class="tab-content">
                     <h2><i class="fa-solid fa-chart-pie"></i> Tingkat Keaktifan & Kehadiran Anggota</h2>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nama Anggota</th>
-                                    <th>Pangkat</th>
-                                    <th>Total Hadir</th>
-                                    <th>Total Izin</th>
-                                    <th>Rasio Persentase</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-keaktifan"></tbody>
-                        </table>
-                    </div>
+                    <div class="table-responsive"><table><thead><tr><th>Nama Anggota</th><th>Pangkat</th><th>Total Hadir</th><th>Total Izin</th><th>Rasio Persentase</th></tr></thead><tbody id="tbody-keaktifan"></tbody></table></div>
                 </div>
 
-                <!-- TAB 3: POIN PRESTASI / KEDISIPLINAN -->
                 <div id="tab-prestasi" class="tab-content">
                     <h2><i class="fa-solid fa-medal"></i> Peringkat Poin Kedisiplinan Personel</h2>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Peringkat</th>
-                                    <th>Nama Personel</th>
-                                    <th>Pangkat</th>
-                                    <th>Akumulasi Poin</th>
-                                    <th>Predikat Provos</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-prestasi"></tbody>
-                        </table>
-                    </div>
+                    <div class="table-responsive"><table><thead><tr><th>Peringkat</th><th>Nama Personel</th><th>Pangkat</th><th>Akumulasi Poin</th><th>Predikat Provos</th></tr></thead><tbody id="tbody-prestasi"></tbody></table></div>
                 </div>
 
-                <!-- TAB 4: DISTRIBUSI STRUKTUR JABATAN -->
                 <div id="tab-jabatan" class="tab-content">
                     <h2><i class="fa-solid fa-users-gear"></i> Kekuatan Personel Per Fungsi Kedinasan</h2>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Fungsi Jabatan / Kesatuan</th>
-                                    <th>Jumlah Personel Aktif</th>
-                                    <th>Status Kekuatan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-jabatan"></tbody>
-                        </table>
-                    </div>
+                    <div class="table-responsive"><table><thead><tr><th>Fungsi Jabatan / Kesatuan</th><th>Jumlah Personel Aktif</th><th>Status Kekuatan</th></tr></thead><tbody id="tbody-jabatan"></tbody></table></div>
                 </div>
 
-                <!-- TAB 5: INTEGRASI DISCORD WEBHOOK SETTING -->
                 <div id="tab-setting" class="tab-content">
                     <h2><i class="fa-brands fa-discord text-blue"></i> Pengaturan Jembatan Sinkronisasi</h2>
-                    <p class="info-text">Masukkan URL Webhook Channel Discord Anda untuk mengirimkan laporan otomatis.</p>
-                    <div class="card setting-card">
+                    <div class="card" style="max-width:100%; margin-top:20px;">
                         <div class="form-group">
                             <label>URL Webhook Discord Aktif</label>
-                            <input type="text" id="webhook-url-input" placeholder="https://discord.com/api/webhooks/...">
+                            <input type="text" id="webhook-url-input" style="width:100%">
                         </div>
-                        <button id="btn-save-webhook" class="btn-modern btn-glow-blue" style="margin-top: 10px; max-width: 250px;">
-                            <i class="fa-solid fa-floppy-disk"></i> SIMPAN CONFIG
-                        </button>
+                        <button id="btn-save-webhook" class="btn-modern btn-glow-blue" style="margin-top:10px; max-width:200px; padding:12px;">Simpan Config</button>
                     </div>
                 </div>
-
             </main>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
