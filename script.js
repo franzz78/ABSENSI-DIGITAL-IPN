@@ -1,12 +1,12 @@
 // ==========================================================================
-// CORE ENGINE V2.7 - KODE FIREBASE CLOUD REALTIME (SINKRON MULTI-DEVICE)
+// CORE ENGINE V2.7 - KODE FIREBASE CLOUD REALTIME (FIXED NAVIGATION BUG)
 // ==========================================================================
 
-// Config Firebase Asli Milikmu (Sudah Terintegrasi)
+// Config Firebase Asli Milikmu
 const firebaseConfig = {
     apiKey: "AIzaSyD9BmV4XKXuMWa4PZHpb7Bbt-rHs61m3lE",
     authDomain: "absensi-polri.firebaseapp.com",
-    databaseURL: "https://absensi-polri-default-rtdb.asia-southeast1.firebasedatabase.app", // Otomatis mengarah ke server region Singapore
+    databaseURL: "https://absensi-polri-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "absensi-polri",
     storageBucket: "absensi-polri.firebasestorage.app",
     messagingSenderId: "19006760644",
@@ -26,10 +26,8 @@ let active_webhook = localStorage.getItem('webhook_url_v27') || default_webhook;
 let uploaded_image_base64 = "";
 
 // ==========================================================================
-// MENDENGARKAN DATA DARI CLOUD SECARA REAL-TIME (SINKRON OTOMATIS MULTI-DEVICE)
+// SINKRONISASI DATA CLOUD REAL-TIME
 // ==========================================================================
-
-// 1. Ambil status gerbang buka/tutup absensi secara online
 database.ref('gate_status').on('value', (snapshot) => {
     const val = snapshot.val();
     if(val) {
@@ -38,7 +36,6 @@ database.ref('gate_status').on('value', (snapshot) => {
     }
 });
 
-// 2. Ambil list absensi secara online (Real-time sync ke semua HP/Laptop)
 database.ref('absensi_records').on('value', (snapshot) => {
     db_absensi = [];
     const data = snapshot.val();
@@ -58,7 +55,7 @@ database.ref('absensi_records').on('value', (snapshot) => {
     console.log("Cloud Database Terkoneksi! Total log masuk: " + db_absensi.length);
 });
 
-// Fungsi Navigasi Halaman Utama
+// Fungsi Tukar Halaman Nyata (.active class swapper)
 function navigateTo(pageId) {
     const activePage = document.querySelector('.page.active');
     const targetPage = document.getElementById(pageId);
@@ -81,7 +78,9 @@ function showToast(message) {
     }, 3200);
 }
 
-// Operasional Tombol Navigasi
+// ==========================================================================
+// PENGAMAN & NAVIGASI TOMBOL UTAMA (FIXED)
+// ==========================================================================
 document.getElementById('btn-go-to-member').addEventListener('click', () => {
     if(!system_gate_open) {
         showToast("❌ PENDAFTARAN ABSENSI HARI INI SUDAH DITUTUP PENGELOLA!");
@@ -89,11 +88,20 @@ document.getElementById('btn-go-to-member').addEventListener('click', () => {
     }
     navigateTo('member-login-page');
 });
-document.getElementById('btn-go-to-admin').addEventListener('click', () => { navigateTo('admin-login-page'); });
-document.getElementById('btn-back-from-member').addEventListener('click', () => { navigateTo('welcome-page'); });
-document.getElementById('btn-back-from-admin').addEventListener('click', () => { navigateTo('welcome-page'); });
 
-// Login Admin (Sandi bawaan: 123)
+document.getElementById('btn-go-to-admin').addEventListener('click', () => { 
+    navigateTo('admin-login-page'); 
+});
+
+document.getElementById('btn-back-from-member').addEventListener('click', () => { 
+    navigateTo('welcome-page'); 
+});
+
+document.getElementById('btn-back-from-admin').addEventListener('click', () => { 
+    navigateTo('welcome-page'); 
+});
+
+// Verifikasi Akses Admin (Sandi: 123)
 document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const inputPass = document.getElementById('admin-secret-code').value;
@@ -106,7 +114,9 @@ document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
     }
 });
 
-// Proses Upload Foto
+// ==========================================================================
+// ENGINE UPLOAD GAMBAR BUKTI
+// ==========================================================================
 document.getElementById('btn-trigger-upload').addEventListener('click', () => {
     document.getElementById('member-photo-input').click();
 });
@@ -141,7 +151,7 @@ function resetFormAbsenV27() {
 }
 
 // ==========================================================================
-// SUBMIT ABSENSI LANGSUNG TELEPORTASI KE CLOUD FIREBASE
+// PROSES KIRM DATA KE CLOUD & DISCORD
 // ==========================================================================
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault(); 
@@ -160,17 +170,14 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
         foto_lokal: uploaded_image_base64
     };
 
-    // KIRIM KE FIREBASE CLOUD
     database.ref('absensi_records').push(payloadData)
     .then(() => {
         showToast(`🟢 Absensi online berhasil disimpan: ${payloadData.nama}`);
     })
     .catch((err) => {
         showToast("❌ Gagal mengirim ke server cloud!");
-        console.error(err);
     });
 
-    // Kirim Ke Discord Webhook
     if(active_webhook) {
         const discordFormat = {
             embeds: [{
@@ -189,7 +196,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(discordFormat)
-        }).catch((err) => console.log("Webhook failed", err));
+        }).catch((err) => console.log("Webhook error"));
     }
 
     resetFormAbsenV27();
@@ -197,7 +204,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
 });
 
 // ==========================================================================
-// FITUR MODAL UTAMA PANEL CONTROL ADMIN
+// MODAL REKAP PANEL CONTROL ADMIN
 // ==========================================================================
 const modal = document.getElementById('admin-data-modal');
 const modalTitle = document.getElementById('modal-data-title');
@@ -222,7 +229,6 @@ document.getElementById('btn-admin-kelola').addEventListener('click', () => {
     modal.classList.add('active');
 });
 
-// Fungsi Hapus Baris Terpilih dari Firebase Cloud
 window.removeOnlineLog = function(firebaseKey) {
     if(confirm("Hapus baris absensi online ini secara permanen?")) {
         database.ref('absensi_records/' + firebaseKey).remove()
@@ -254,7 +260,6 @@ document.getElementById('btn-admin-teraktif').addEventListener('click', () => {
     modal.classList.add('active');
 });
 
-// Sinkronisasi tombol pintu absensi online
 const gateBtn = document.getElementById('btn-gate-toggle-v2');
 function checkGateUI() {
     if(system_gate_open) {
@@ -308,3 +313,4 @@ document.getElementById('btn-admin-logout-v2').addEventListener('click', () => {
     showToast("🔒 Sesi pengelola ditutup.");
     navigateTo('welcome-page');
 });
+                        
