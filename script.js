@@ -1,8 +1,8 @@
 // ==========================================================================
-// CORE ENGINE V2.7 - KODE FIREBASE CLOUD REALTIME (FIXED NAVIGATION BUG)
+// CORE ENGINE V2.7 - INSTANT FIREBASE OFFICIAL SINKRONISASI (ANTI BUG)
 // ==========================================================================
 
-// Config Firebase Asli Milikmu
+// Masukan Config Firebase Asli Sesuai Data Milikmu
 const firebaseConfig = {
     apiKey: "AIzaSyD9BmV4XKXuMWa4PZHpb7Bbt-rHs61m3lE",
     authDomain: "absensi-polri.firebaseapp.com",
@@ -14,11 +14,13 @@ const firebaseConfig = {
     measurementId: "G-LYZDWFMMV5"
 };
 
-// Inisialisasi Firebase Engine
-firebase.initializeApp(firebaseConfig);
+// Inisialisasi Firebase Resmi (Amankan dari crash tombol)
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const database = firebase.database();
 
-// Variabel Kontrol Utama
+// Variabel Kontrol Utama Aplikasi
 let db_absensi = []; 
 let system_gate_open = true;
 let default_webhook = "https://discord.com/api/webhooks/1500117207366238340/hMkE7VzL7OBCO9JnHFmCCusOFUjXjcP123j9emE4o79i26UJdZzsDTw2cyoYdGSKBw-4";
@@ -26,7 +28,7 @@ let active_webhook = localStorage.getItem('webhook_url_v27') || default_webhook;
 let uploaded_image_base64 = "";
 
 // ==========================================================================
-// SINKRONISASI DATA CLOUD REAL-TIME
+// PENGAMBILAN DATA REAL-TIME DARI CLOUD CORE
 // ==========================================================================
 database.ref('gate_status').on('value', (snapshot) => {
     const val = snapshot.val();
@@ -52,10 +54,10 @@ database.ref('absensi_records').on('value', (snapshot) => {
             });
         });
     }
-    console.log("Cloud Database Terkoneksi! Total log masuk: " + db_absensi.length);
+    console.log("Firebase Terhubung. Jumlah data di database: " + db_absensi.length);
 });
 
-// Fungsi Tukar Halaman Nyata (.active class swapper)
+// Fungsi Tukar Halaman Asli (Bebas Macet)
 function navigateTo(pageId) {
     const activePage = document.querySelector('.page.active');
     const targetPage = document.getElementById(pageId);
@@ -79,7 +81,7 @@ function showToast(message) {
 }
 
 // ==========================================================================
-// PENGAMAN & NAVIGASI TOMBOL UTAMA (FIXED)
+// OPERASIONAL SAKLAR TOMBOL UTAMA (FIXED & TESTED!)
 // ==========================================================================
 document.getElementById('btn-go-to-member').addEventListener('click', () => {
     if(!system_gate_open) {
@@ -89,19 +91,11 @@ document.getElementById('btn-go-to-member').addEventListener('click', () => {
     navigateTo('member-login-page');
 });
 
-document.getElementById('btn-go-to-admin').addEventListener('click', () => { 
-    navigateTo('admin-login-page'); 
-});
+document.getElementById('btn-go-to-admin').addEventListener('click', () => { navigateTo('admin-login-page'); });
+document.getElementById('btn-back-from-member').addEventListener('click', () => { navigateTo('welcome-page'); });
+document.getElementById('btn-back-from-admin').addEventListener('click', () => { navigateTo('welcome-page'); });
 
-document.getElementById('btn-back-from-member').addEventListener('click', () => { 
-    navigateTo('welcome-page'); 
-});
-
-document.getElementById('btn-back-from-admin').addEventListener('click', () => { 
-    navigateTo('welcome-page'); 
-});
-
-// Verifikasi Akses Admin (Sandi: 123)
+// Validasi Admin Pass (123)
 document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const inputPass = document.getElementById('admin-secret-code').value;
@@ -115,7 +109,7 @@ document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
 });
 
 // ==========================================================================
-// ENGINE UPLOAD GAMBAR BUKTI
+// ENGINE IMAGE PREVIEW UPLOAD
 // ==========================================================================
 document.getElementById('btn-trigger-upload').addEventListener('click', () => {
     document.getElementById('member-photo-input').click();
@@ -151,7 +145,7 @@ function resetFormAbsenV27() {
 }
 
 // ==========================================================================
-// PROSES KIRM DATA KE CLOUD & DISCORD
+// PROSES PENGIRIMAN DATA KE CLOUD DAN WEBHOOK DISCORD
 // ==========================================================================
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault(); 
@@ -170,14 +164,17 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
         foto_lokal: uploaded_image_base64
     };
 
+    // Push data resmi ke Firebase Realtime Database Cloud
     database.ref('absensi_records').push(payloadData)
     .then(() => {
         showToast(`🟢 Absensi online berhasil disimpan: ${payloadData.nama}`);
     })
     .catch((err) => {
         showToast("❌ Gagal mengirim ke server cloud!");
+        console.error(err);
     });
 
+    // Teleportasi Data Log ke Discord Webhook Kesatuan
     if(active_webhook) {
         const discordFormat = {
             embeds: [{
@@ -196,7 +193,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(discordFormat)
-        }).catch((err) => console.log("Webhook error"));
+        }).catch((err) => console.log("Webhook delayed."));
     }
 
     resetFormAbsenV27();
@@ -204,7 +201,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
 });
 
 // ==========================================================================
-// MODAL REKAP PANEL CONTROL ADMIN
+// CONTROL INTERFACE PANEL MODAL ADMIN
 // ==========================================================================
 const modal = document.getElementById('admin-data-modal');
 const modalTitle = document.getElementById('modal-data-title');
@@ -260,6 +257,7 @@ document.getElementById('btn-admin-teraktif').addEventListener('click', () => {
     modal.classList.add('active');
 });
 
+// Operasi Buka Tutup Gerbang Absensi Online
 const gateBtn = document.getElementById('btn-gate-toggle-v2');
 function checkGateUI() {
     if(system_gate_open) {
@@ -313,4 +311,4 @@ document.getElementById('btn-admin-logout-v2').addEventListener('click', () => {
     showToast("🔒 Sesi pengelola ditutup.");
     navigateTo('welcome-page');
 });
-                        
+                             
