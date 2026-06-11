@@ -1,13 +1,22 @@
 // ==========================================================================
-// KODE ASLI LOGIKA NAVIGASI KELAS (BACK TO SEED V2.7)
+// CORE ENGINE V2.7 - KODE NAVIGASI KELAS ASLI (DEFAULT WEBHOOK INTEGRATED)
 // ==========================================================================
 
 let db_absensi = JSON.parse(localStorage.getItem('db_absensi_v27')) || [];
 let system_gate_open = localStorage.getItem('gate_status_v27') !== 'CLOSED';
-let active_webhook = localStorage.getItem('webhook_url_v27') || "https://discord.com/api/webhooks/1500117207366238340/hMkE7VzL7OBCO9JnHFmCCusOFUjXjcP123j9emE4o79i26UJdZzsDTw2cyoYdGSKBw-4";
+
+// MENANAMKAN URL WEBHOOK DISCORD KAMU SEBAGAI DEFAULT UTAMA SISTEM
+let default_webhook = "https://discord.com/api/webhooks/1500117207366238340/hMkE7VzL7OBCO9JnHFmCCusOFUjXjcP123j9emE4o79i26UJdZzsDTw2cyoYdGSKBw-4";
+let active_webhook = localStorage.getItem('webhook_url_v27') || default_webhook;
+
+// Simpan otomatis ke penyimpanan lokal browser jika belum pernah tersimpan sebelumnya
+if (!localStorage.getItem('webhook_url_v27')) {
+    localStorage.setItem('webhook_url_v27', default_webhook);
+}
+
 let uploaded_image_base64 = "";
 
-// FUNGSI NAVIGASI ASLI KAMU (Hanya menukar kelas .active tanpa display:none)
+// FUNGSI NAVIGASI ASLI (Hanya menukar kelas .active agar sesuai alur CSS bawaan)
 function navigateTo(pageId) {
     const activePage = document.querySelector('.page.active');
     const targetPage = document.getElementById(pageId);
@@ -23,6 +32,7 @@ function navigateTo(pageId) {
 // Banner Pop-up Notifikasi Melayang
 function showToast(message) {
     const container = document.getElementById('notification-container');
+    if (!container) return;
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.innerText = message;
@@ -34,7 +44,9 @@ function showToast(message) {
     }, 3200);
 }
 
-// Alur Pindah Halaman Menu Utama
+// ==========================================================================
+// OPERASIONAL TOMBOL-TOMBOL NAVIGASI HALAMAN UTAMA
+// ==========================================================================
 document.getElementById('btn-go-to-member').addEventListener('click', () => {
     if(!system_gate_open) {
         showToast("❌ PENDAFTARAN ABSENSI HARI INI SUDAH DITUTUP PENGELOLA!");
@@ -42,15 +54,16 @@ document.getElementById('btn-go-to-member').addEventListener('click', () => {
     }
     navigateTo('member-login-page');
 });
+
 document.getElementById('btn-go-to-admin').addEventListener('click', () => { navigateTo('admin-login-page'); });
 document.getElementById('btn-back-from-member').addEventListener('click', () => { navigateTo('welcome-page'); });
 document.getElementById('btn-back-from-admin').addEventListener('click', () => { navigateTo('welcome-page'); });
 
-// Otentikasi Password Masuk Admin (Password Default Sistem: 123)
+// Otentikasi Masuk Admin Panel (Sandi bawaan: 123)
 document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const inputPass = document.getElementById('admin-secret-code').value;
-    if(inputPass === "ABSENSIONIPNADMIN27##") {
+    if(inputPass === "123") {
         showToast("🟢 Akses Pengelola Terverifikasi!");
         document.getElementById('admin-secret-code').value = "";
         navigateTo('admin-page');
@@ -59,7 +72,9 @@ document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
     }
 });
 
-// Operasional Upload Gambar Kamera/Galeri
+// ==========================================================================
+// PROSES SIMPAN GAMBAR BUKTI HADIR (BASE64 ENGINE)
+// ==========================================================================
 document.getElementById('btn-trigger-upload').addEventListener('click', () => {
     document.getElementById('member-photo-input').click();
 });
@@ -94,11 +109,13 @@ function resetFormAbsenV27() {
     document.getElementById('preview-placeholder').style.display = "block";
 }
 
-// LOGIKA PENGIRIMAN ABSENSI (Hanya ditambahkan cek validasi foto manual lewat JS)
+// ==========================================================================
+// VALIDASI & SUBMIT PENYIMPANAN ABSENSI KE DISCORD & LOCALSTORAGE
+// ==========================================================================
 document.getElementById('login-form').addEventListener('submit', function(e) {
     e.preventDefault(); 
     
-    // Validasi gambar manual (Menggantikanrequired HTML yang bikin hang browser)
+    // Validasi Foto lewat JS (Solusi anti-stuck browser)
     if (!uploaded_image_base64 || uploaded_image_base64 === "") {
         showToast("❌ Wajib melampirkan file gambar bukti hadir!");
         return; 
@@ -113,7 +130,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
         foto_lokal: uploaded_image_base64
     };
 
-    // Simpan data
+    // Eksekusi Simpan Database Lokal Browser
     db_absensi.push(payloadData);
     localStorage.setItem('db_absensi_v27', JSON.stringify(db_absensi));
     showToast(`🟢 Absensi tersimpan untuk: ${payloadData.nama}`);
@@ -122,7 +139,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     if(active_webhook) {
         const discordFormat = {
             embeds: [{
-                title: `NOTIFIKASI LOG ABSENSI MASUK`,
+                title: `🔔 NOTIFIKASI LOG ABSENSI MASUK - ${payloadData.hari}`,
                 color: 3066993,
                 fields: [
                     { name: "Nama Anggota", value: payloadData.nama, inline: true },
@@ -138,8 +155,8 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(discordFormat)
         })
-        .then(() => console.log("Success"))
-        .catch((err) => console.log("Failed", err));
+        .then(() => console.log("Logs successfully broadcasted."))
+        .catch((err) => console.log("Forced forward ignored.", err));
     }
 
     resetFormAbsenV27();
@@ -147,7 +164,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
 });
 
 // ==========================================================================
-// PANEL KONSOL ADMIN ASLI
+// FITUR MANAJEMEN DATA MODAL PANEL ADMIN
 // ==========================================================================
 const modal = document.getElementById('admin-data-modal');
 const modalTitle = document.getElementById('modal-data-title');
