@@ -11,16 +11,13 @@ let currentUser = "", currentRank = "", currentPosition = "", currentNrp = "";
 let isGateOpen = localStorage.getItem('exambro_gate_status') !== 'closed';
 let countdownTimer = null, timeLeft = 300;
 
-// Menjalankan inisialisasi setelah seluruh elemen HTML terbaca sempurna
 window.addEventListener('DOMContentLoaded', () => {
     
-    // Sinkronisasi Input Webhook di Admin Setting View
     const webhookInput = document.getElementById('webhook-url-input');
     if (webhookInput && currentWebhookURL) {
         webhookInput.value = currentWebhookURL;
     }
     
-    // Render Awal Tabel & UI
     updateDashboardUI();
     updateGateBtnUI();
 
@@ -122,7 +119,6 @@ window.addEventListener('DOMContentLoaded', () => {
         showToast("Excel berhasil diunduh!", "success");
     });
 
-    // Kontrol Buka-Tutup Gerbang Absensi
     const gateBtn = document.getElementById('btn-gate-toggle');
     gateBtn.addEventListener('click', () => {
         isGateOpen = !isGateOpen;
@@ -136,7 +132,6 @@ window.addEventListener('DOMContentLoaded', () => {
         switchPage('welcome-page');
     });
 
-    // Navigasi Tab di dalam Panel Admin
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -190,23 +185,36 @@ function simpanDataKehadiran(name, rank, pos, nrp, status, ket) {
     updateDashboardUI();
 }
 
+// ==========================================================================
+// FIX ENGINE WEBHOOK: Menggunakan Text Block (Tanpa Spam Emoji, Sangat Rapi)
+// ==========================================================================
 function kirimWebhookDiscord(name, rank, pos, nrp, statusValue) {
     if (!currentWebhookURL) return;
+
+    // Membuat tampilan text block kode yang rapi & simetris
+    const textFormatContent = 
+        "```text\n" +
+        "=========================================\n" +
+        "        LAPORAN LAPANGAN ANGGOTA         \n" +
+        "=========================================\n" +
+        `Nama Anggota  : ${name}\n` +
+        `Pangkat       : ${rank}\n` +
+        `NRP           : ${nrp}\n` +
+        `Fungsi/Jabtan : ${pos}\n` +
+        `Status Log    : ${statusValue}\n` +
+        "=========================================\n" +
+        "```";
+
     const payload = {
         embeds: [{
-            title: "🚨 LAPORAN PRESENSI DIGITAL ANGGOTA 🚨",
-            color: statusValue.includes("HADIR") ? 1352433 : 14251782,
-            fields: [
-                { name: "👤 Nama Anggota", value: name, inline: true },
-                { name: "🏅 Pangkat", value: rank, inline: true },
-                { name: "💼 Jabatan / Kesatuan", value: pos, inline: false },
-                { name: "🆔 NRP", value: nrp, inline: true },
-                { name: "📌 Status Kehadiran", value: `**${statusValue}**`, inline: true }
-            ],
+            title: "SISTEM ABSENSI DIGITAL",
+            description: textFormatContent,
+            color: statusValue.includes("HADIR") ? 3447003 : 15105570, // Biru Polri untuk Hadir, Amber untuk Izin
             timestamp: new Date().toISOString(),
-            footer: { text: "Sistem Absensi Digital Polri • Presisi" }
+            footer: { text: "Otoritas Presensi Terpusat • RI" }
         }]
     };
+
     fetch(currentWebhookURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -277,5 +285,4 @@ function resetFormInputs() {
     document.getElementById('police-nrp').value = "";
     document.getElementById('permission-reason').value = "";
     document.getElementById('permission-file').value = "";
-               }
-                             
+                                        }
