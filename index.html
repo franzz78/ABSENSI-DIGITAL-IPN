@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABSENSI DIGITAL V2.7 - POLRI COMMAND SYSTEM</title>
+    <title>ABSENSI DIGITAL V2.8 - POLRI COMMAND SYSTEM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=500;800&family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,7 +36,7 @@
                     <button id="btn-go-to-member" class="btn-primary-maroon">ABSENSI</button>
                     <button id="btn-go-to-admin" class="btn-text-only">Pengelola</button>
                 </div>
-                <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span> | V2.7</div>
+                <div class="developer-tag-v2">ID Pengembang: <span>nathanael_0918</span> | V2.8</div>
             </div>
         </div>
 
@@ -61,10 +61,6 @@
                             <option value="SAMAPTA">SAMAPTA</option>
                             <option value="PROPAM / PROVOS">PROPAM / PROVOS</option>
                             <option value="HUMAS">HUMAS</option>
-                            <option value="SAT BRIMOB">SAT BRIMOB</option>
-                            <option value="SAT DOKPOL">SAT DOKPOL</option>
-                            <option value="DIT SDM">DIT SDM</option>
-                            <option value="DLL">DLL</option>
                         </select>
                     </div>
 
@@ -78,7 +74,6 @@
                             <option value="Kamis">Kamis</option>
                             <option value="Jumat">Jumat</option>
                             <option value="Sabtu">Sabtu</option>
-                            <option value="Minggu">Minggu</option>
                         </select>
                     </div>
                     
@@ -101,7 +96,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary-maroon" style="border-radius: 40px; margin-top: 15px;">
+                    <button type="submit" id="btn-submit-absensi" class="btn-primary-maroon" style="border-radius: 40px; margin-top: 15px;">
                         KIRIM ABSENSI
                     </button>
 
@@ -147,26 +142,26 @@
                 <div class="subtitle-school" style="margin-bottom: 25px; color: #2563eb; font-weight: 800; letter-spacing: 1px;">INDONESIA POLICE NASIONAL</div>
                 
                 <div class="grid-row-v2">
-                    <button class="btn-grid-dark" id="btn-admin-rekap">Rekap Kehadiran</button>
-                    <button class="btn-grid-dark" id="btn-admin-kelola">Kelola Absensi</button>
+                    <button type="button" class="btn-grid-dark" id="btn-admin-rekap">Rekap Kehadiran</button>
+                    <button type="button" class="btn-grid-dark" id="btn-admin-kelola">Kelola Absensi</button>
                 </div>
 
                 <div class="grid-row-v2">
-                    <button class="btn-grid-tosca" id="btn-admin-peringkat">Peringkat Anggota</button>
-                    <button class="btn-grid-tosca" id="btn-admin-teraktif">Anggota Teraktif</button>
+                    <button type="button" class="btn-grid-tosca" id="btn-admin-peringkat">Peringkat Anggota</button>
+                    <button type="button" class="btn-grid-tosca" id="btn-admin-teraktif">Anggota Teraktif</button>
                 </div>
 
                 <div class="grid-row-v2">
-                    <button class="btn-grid-orange" id="btn-gate-toggle-v2">Tutup Absensi</button>
-                    <button class="btn-grid-red" id="btn-export-excel-v2">Unduh Excel</button>
+                    <button type="button" class="btn-grid-orange" id="btn-gate-toggle-v2">Tutup Absensi</button>
+                    <button type="button" class="btn-grid-red" id="btn-export-excel-v2">Unduh Excel</button>
                 </div>
 
                 <div class="grid-row-v2">
-                    <button class="btn-grid-magenta" id="btn-delete-daily-v2">Reset Harian</button>
-                    <button class="btn-grid-brown" id="btn-delete-monthly-v2">Reset & Webhook</button>
+                    <button type="button" class="btn-grid-magenta" id="btn-delete-daily-v2">Reset Harian</button>
+                    <button type="button" class="btn-grid-brown" id="btn-delete-monthly-v2">Reset & Webhook</button>
                 </div>
 
-                <button id="btn-admin-logout-v2" class="btn-text-only" style="margin-top: 25px; color: #dc2626; font-weight: 700;">
+                <button type="button" id="btn-admin-logout-v2" class="btn-text-only" style="margin-top: 25px; color: #dc2626; font-weight: 700;">
                     <i class="fa-solid fa-power-off"></i> Keluar Sesi Pengelola
                 </button>
             </div>
@@ -176,7 +171,7 @@
             <div class="modal-content-v2">
                 <div class="modal-header-v2">
                     <h3 id="modal-data-title">Detail Log Data</h3>
-                    <button id="btn-close-modal" class="btn-back-v2"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" id="btn-close-modal" class="btn-back-v2"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="table-container-v2" style="max-height: 380px; overflow-y: auto;">
                     <table id="modal-data-table">
