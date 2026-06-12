@@ -99,7 +99,7 @@ document.getElementById('btn-back-from-admin').addEventListener('click', () => {
 document.getElementById('admin-auth-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const inputPass = document.getElementById('admin-secret-code').value;
-    if(inputPass === "123") {
+    if(inputPass === "ADMINISTRATOR234#") {
         showToast("🟢 Akses Pengelola Terverifikasi!");
         document.getElementById('admin-secret-code').value = "";
         navigateTo('admin-page');
